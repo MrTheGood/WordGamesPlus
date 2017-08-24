@@ -1,0 +1,9 @@
+#This will be used in a future update.
+players:
+  {UUID}:
+    name: 'Name'
+    displayName: '[Rank]Displayname'
+    Wins:
+      Hover: 4
+      Reorder: 1
+      unmute: 3

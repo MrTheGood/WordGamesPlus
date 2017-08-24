@@ -1,0 +1,40 @@
+###################
+# Language config #
+###################
+# Change the language settings here.
+
+reload: '{plugin}&a reloaded!'
+
+
+#Under the variables part, you can change what "{plugin}" gets replaced with.
+variables:
+  plugin: '&6[&cWordGames+&6]&r'
+  #
+  #This is what will replace '{word}' in the hover game type.
+  HOVER: '&athis' 
+
+
+games:
+  reorder: 
+  - '{plugin} &2Reorder the following letters to make a word: &a{word}&2.'
+  - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+  unmute: 
+  - '{plugin} &2Unmute the following word: &a{word}&2.'
+  - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+  hover:
+  - '{plugin} &2Hover with your mouse over &a{word}&2 word and type &2it as fast as possible!'
+  - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+  gameWon:
+  - '{plugin} &a{player}&2 has won by guessing the right word: &a"{word}"&2! Reward: &a{aantal}x {reward}&2!'
+  stop: '{plugin} &4All WordGames have been stopped.'
+
+
+error:
+  noPermissions: '{plugin} &4You do not have the permissions to execute that command.'
+  notEnoughArguments: '{plugin} &4Wrong input! Usage: /wordgame <help>'
+  typeNotFound: '{plugin} &4Error 404: Type not found! Usage: /wordgame <help>'
+  wrongInput: '{plugin} &4Syntax error. Usage: /wordgame <help>'
+  notPlaying: "{plugin} &4It isn't possible to stop something that isn't there!"
+  somethingWrong: '{plugin} &4Oops, something went wrong. Please contact insertCode.'
+  configWrong: '{plugin} &4Something went wrong in the configuration. If you need help fixing it, please contact insertCode.'
+  tooManyGames: '{plugin} &4You cannot create any more games.'
