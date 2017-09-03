@@ -22,6 +22,7 @@ import eu.insertcode.wordgames.compatibility.Compatibility;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_10_R1;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_11_R1;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_12_R1;
+import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R3;
 
 /**
  * @author Maarten de Goede - insertCode.eu
@@ -83,6 +84,12 @@ public class Main extends JavaPlugin implements Listener {
 		if (version.equals("v1_10_R1")) {
 			//Server is running 1.10 so we need to use the 1.10 R1 NMS class
 			compatibility = new Compatibility_1_10_R1();
+			return true;
+		}
+
+		if (version.equals("v1_8_R3")) {
+			//Server is running 1.10 so we need to use the 1.8 R3 NMS class
+			compatibility = new Compatibility_1_8_R3();
 			return true;
 		}
 		
