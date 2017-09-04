@@ -22,7 +22,11 @@ import eu.insertcode.wordgames.compatibility.Compatibility;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_10_R1;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_11_R1;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_12_R1;
+import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R1;
+import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R2;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R3;
+import eu.insertcode.wordgames.compatibility.Compatibility_1_9_R1;
+import eu.insertcode.wordgames.compatibility.Compatibility_1_9_R2;
 
 /**
  * @author Maarten de Goede - insertCode.eu
@@ -35,8 +39,6 @@ public class Main extends JavaPlugin implements Listener {
 	private Compatibility compatibility;
 	private PluginDescriptionFile pdfFile = getDescription();
 	private ArrayList<WordGame> wordGames = new ArrayList<WordGame>();
-	//TODO: Ruim deze code op.. -_-
-	//TODO: Als er een update is, warn het in de console. (Via website database)
 	
 	Utils utils;
 	
@@ -87,9 +89,33 @@ public class Main extends JavaPlugin implements Listener {
 			return true;
 		}
 
+		if (version.equals("v1_9_R1")) {
+			//Server is running 1.9 so we need to use the 1.9 R1 NMS class
+			compatibility = new Compatibility_1_9_R1();
+			return true;
+		}
+
+		if (version.equals("v1_9_R2")) {
+			//Server is running 1.9 so we need to use the 1.9 R2 NMS class
+			compatibility = new Compatibility_1_9_R2();
+			return true;
+		}
+
 		if (version.equals("v1_8_R3")) {
-			//Server is running 1.10 so we need to use the 1.8 R3 NMS class
+			//Server is running 1.9 so we need to use the 1.8 R3 NMS class
 			compatibility = new Compatibility_1_8_R3();
+			return true;
+		}
+
+		if (version.equals("v1_8_R2")) {
+			//Server is running 1.9 so we need to use the 1.8 R2 NMS class
+			compatibility = new Compatibility_1_8_R2();
+			return true;
+		}
+
+		if (version.equals("v1_8_R1")) {
+			//Server is running 1.9 so we need to use the 1.8 R1 NMS class
+			compatibility = new Compatibility_1_8_R1();
 			return true;
 		}
 		
@@ -262,7 +288,7 @@ public class Main extends JavaPlugin implements Listener {
 					
 					//Reload & send a message
 					reloadConfig();
-//					configManager.reloadData();TODO
+//					configManager.reloadData();
 					configManager.reloadMessages();
 					//This isn't an error message. I just didn't feel like adding a whole new method.
 					s.sendMessage(utils.getErrorMessage("reload"));
