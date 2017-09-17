@@ -1,0 +1,100 @@
+package eu.insertcode.wordgames.games;
+
+import static org.bukkit.ChatColor.translateAlternateColorCodes;
+
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
+import eu.insertcode.wordgames.Main;
+import eu.insertcode.wordgames.utils.ConfigManager;
+
+public abstract class WordGame {
+	public static class Reward {
+		private final int amount;		//The amount of the reward for the winner
+		private final String reward;	//The reward for the winner
+		
+		public Reward(int amount, String reward) {
+			this.amount = amount;
+			this.reward = reward;
+		}
+		
+		public int getAmount() {
+			return amount;
+		}
+		public String getReward() {
+			return reward;
+		}
+	}
+	
+	protected Reward reward; 		//The reward the player will get for winning.
+	protected int schedulerID;		//The ID of the scheduled task
+	protected String showedWord,	//The word which was shown in the chat
+				wordToType;			//The correct word
+
+	protected Main plugin;
+	
+	public WordGame(Main instance, String wordToType, Reward reward) {
+		plugin = instance;
+		this.wordToType = wordToType;
+		this.reward = reward;
+		sendGameMessage();
+		startAutoBroadcaster();
+	}
+	
+	
+	/**
+	 * Starts the autobroadcast.
+	 */
+	protected void startAutoBroadcaster() {
+		schedulerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
+			public void run() {
+				//Send the message
+				sendGameMessage();
+			}
+		}, 20 * 10, plugin.getConfig().getInt("gameOptions.scheduler.timerInSeconds") * 20);
+	}
+	/**
+	 * Stops the autobroadcast.
+	 */
+	public void stopAutoBroadcaster() {
+		Bukkit.getScheduler().cancelTask(schedulerID);
+	}
+	
+	
+	/**
+	 * Sends the winner message
+	 * @param winner
+	 */
+	public void sendWinnerMessage(Player winner) {
+		//Get the messages.
+		List<String> messages = ConfigManager.getMessages().getStringList("games.gameWon");
+		for (String message : messages) {
+			//Replace the variables with the correct value.
+			message = message.replace("{plugin}", ConfigManager.getMessages().getString("variables.plugin")).replace("{player}", winner.getDisplayName())
+					.replace("{word}", wordToType).replace("{aantal}", "" + reward.getAmount()).replace("{reward}", reward.getReward());
+			//Broadcast the message.
+			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
+		}
+	}
+	
+	
+	/**
+	 * Translates color codes, creates JSON syntax and sends the message.
+	 */
+	public abstract void sendGameMessage();
+	
+	public boolean checkMessage(String message, Player p) {
+		//If the player types the correct word.
+		if (message.equalsIgnoreCase(wordToType)) {
+			String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
+			command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
+			Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
+			sendWinnerMessage(p);
+			stopAutoBroadcaster();
+			return true;
+		}
+		return false;
+	}
+}
