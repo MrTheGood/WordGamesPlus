@@ -46,26 +46,13 @@ public class CommandHandler implements CommandExecutor {
 				
 				//Test which wordgame the user is trying to create
 				if (args[0].equalsIgnoreCase("hover")) 	{
-					//Test if the user has the right permissions
-					if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.hover"))
-						return createGame(s, args, Type.HOVER); 
-					else
-						return errorMessage(s, "error.noPermissions"); 
+					return HoverGame.hasStartPermission(s) ? createGame(s, args, Type.HOVER) : errorMessage(s, "error.noPermissions"); 
 				}
 				if (args[0].equalsIgnoreCase("reorder")) {
-					//Test if the user has the right permissions
-					if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.reorder"))
-						return createGame(s, args, Type.REORDER);
-					else
-						return errorMessage(s, "error.noPermissions"); 
+					return ReorderGame.hasStartPermission(s) ? createGame(s, args, Type.REORDER) : errorMessage(s, "error.noPermissions"); 
 				}
 				if (args[0].equalsIgnoreCase("unmute")) {
-					//Test if the user has the right permissions
-					if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.unmute"))
-						return createGame(s, args, Type.UNMUTE);
-					else
-						return errorMessage(s, "error.noPermissions"); 
-					
+					return UnmuteGame.hasStartPermission(s) ? createGame(s, args, Type.UNMUTE) : errorMessage(s, "error.noPermissions");
 				}
 				
 				return errorMessage(s, "error.typeNotFound");

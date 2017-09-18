@@ -107,8 +107,10 @@ public class Main extends JavaPlugin implements Listener {
 		// For all games
 		for (int i = 0; i < wordGames.size(); i++) {
 			WordGame wg = wordGames.get(i);
-			if (wg.checkMessage(e.getMessage(), e.getPlayer()))
-				wordGames.remove(i);
+			if (wg.hasPlayPermission(e.getPlayer())) {
+				if (wg.checkMessage(e.getMessage(), e.getPlayer()))
+					wordGames.remove(i);
+			}
 		}
 	}
 	

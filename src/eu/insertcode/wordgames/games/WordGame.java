@@ -5,6 +5,7 @@ import static org.bukkit.ChatColor.translateAlternateColorCodes;
 import java.util.List;
 
 import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import eu.insertcode.wordgames.Main;
@@ -27,6 +28,9 @@ public abstract class WordGame {
 			return reward;
 		}
 	}
+
+	private static final String PERMISSION_PLAY = "wordgamesplus.play";
+	private static final String PERMISSION_START = "wordgamesplus.start";
 	
 	protected Reward reward; 		//The reward the player will get for winning.
 	protected int schedulerID;		//The ID of the scheduled task
@@ -42,7 +46,13 @@ public abstract class WordGame {
 		sendGameMessage();
 		startAutoBroadcaster();
 	}
-	
+
+	public boolean hasPlayPermission(Player p) {
+		return p.hasPermission(PERMISSION_PLAY);
+	}
+	public static boolean hasStartPermission(CommandSender s) {
+		return s.hasPermission(PERMISSION_START);
+	}
 	
 	/**
 	 * Starts the autobroadcast.
