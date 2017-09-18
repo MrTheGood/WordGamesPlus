@@ -22,7 +22,8 @@ import eu.insertcode.wordgames.utils.ConfigManager;
 import eu.insertcode.wordgames.utils.WordGameUtils;
 
 /**
- * @author Maarten de Goede - insertCode.eu Main class
+ * @author Maarten de Goede - insertCode.eu 
+ * Main class
  */
 public class Main extends JavaPlugin implements Listener {
 	public ConfigManager configManager;

@@ -43,12 +43,30 @@ public class CommandHandler implements CommandExecutor {
 						&& plugin.getConfig().getInt("gameOptions.maxPlayingGames") != 0) {
 					return errorMessage(s, "error.tooManyGames"); 
 				}
-				//If the sender the required permissions
-				if (!s.hasPermission("wordgamesplus.start")) { return errorMessage(s, "error.noPermissions"); }
-
-				if (args[0].equalsIgnoreCase("hover")) 	{ return createGame(s, args, Type.HOVER); }
-				if (args[0].equalsIgnoreCase("reorder")){ return createGame(s, args, Type.REORDER); }
-				if (args[0].equalsIgnoreCase("unmute")) { return createGame(s, args, Type.UNMUTE); }
+				
+				//Test which wordgame the user is trying to create
+				if (args[0].equalsIgnoreCase("hover")) 	{
+					//Test if the user has the right permissions
+					if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.hover"))
+						return createGame(s, args, Type.HOVER); 
+					else
+						return errorMessage(s, "error.noPermissions"); 
+				}
+				if (args[0].equalsIgnoreCase("reorder")) {
+					//Test if the user has the right permissions
+					if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.reorder"))
+						return createGame(s, args, Type.REORDER);
+					else
+						return errorMessage(s, "error.noPermissions"); 
+				}
+				if (args[0].equalsIgnoreCase("unmute")) {
+					//Test if the user has the right permissions
+					if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.unmute"))
+						return createGame(s, args, Type.UNMUTE);
+					else
+						return errorMessage(s, "error.noPermissions"); 
+					
+				}
 				
 				return errorMessage(s, "error.typeNotFound");
 			}
@@ -60,15 +78,24 @@ public class CommandHandler implements CommandExecutor {
 
 	private boolean onCommandHelp(CommandSender s) {
 		s.sendMessage(GREEN + "/wordgames help" + DARK_GREEN + "  to show this message.");
+		
 		if (s.hasPermission("wordgamesplus.reload"))
 			s.sendMessage(GREEN + "/wordgames reload" + DARK_GREEN + "  to reload the configuration.");
+		
 		if (s.hasPermission("wordgamesplus.stop"))
 			s.sendMessage(GREEN + "/wordgames stop" + DARK_GREEN + "  to stop any and all playing games.");
-		if (s.hasPermission("wordgamesplus.start")) {
+		
+		
+		if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.reorder"))
 			s.sendMessage(GREEN + "/wordgames reorder <word> [number] <reward>" + DARK_GREEN + "  to start the 'reorder' minigame.");
+		
+		if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.hover"))
 			s.sendMessage(GREEN + "/wordgames hover <word> [number] <reward>" + DARK_GREEN + " to start the 'hover' minigame.");
+		
+		if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.unmute"))
 			s.sendMessage(GREEN + "/wordgames unmute <word> [number] <reward>" + DARK_GREEN + " to start the 'unmute' minigame.");
-		}
+		
+		
 		s.sendMessage(GOLD + "[" + DARK_RED + "WordGames+" + GOLD + "]" + DARK_GREEN + " Plugin version: " + plugin.getDescription().getVersion());
 		return true;
 	}
