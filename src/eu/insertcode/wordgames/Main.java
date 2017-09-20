@@ -19,6 +19,7 @@ import eu.insertcode.wordgames.compatibility.Compatibility_1_9_R1;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_9_R2;
 import eu.insertcode.wordgames.games.WordGame;
 import eu.insertcode.wordgames.utils.ConfigManager;
+import eu.insertcode.wordgames.utils.Utils;
 import eu.insertcode.wordgames.utils.WordGameUtils;
 
 /**
@@ -107,9 +108,12 @@ public class Main extends JavaPlugin implements Listener {
 		// For all games
 		for (int i = 0; i < wordGames.size(); i++) {
 			WordGame wg = wordGames.get(i);
-			if (wg.hasPlayPermission(e.getPlayer())) {
-				if (wg.checkMessage(e.getMessage(), e.getPlayer()))
+			if (wg.checkMessage(e.getMessage(), e.getPlayer())) {
+				if (wg.hasPlayPermission(e.getPlayer())) {
 					wordGames.remove(i);
+				} else {
+					e.getPlayer().sendMessage(Utils.getColouredMessages("error.noPlayPermissions"));
+				}
 			}
 		}
 	}

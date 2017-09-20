@@ -30,6 +30,7 @@ games:
 
 
 error:
+  noPlayPermissions: '{plugin} &4Congratulations! You guessed the right word! Unfortunatly you do not have the permissions to participate in this particular wordgame type.'
   noPermissions: '{plugin} &4You do not have the permissions to execute that command.'
   notEnoughArguments: '{plugin} &4Wrong input! Usage: /wordgame <help>'
   typeNotFound: '{plugin} &4Error 404: Type not found! Usage: /wordgame <help>'
