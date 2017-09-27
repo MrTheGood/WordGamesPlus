@@ -1,13 +1,13 @@
 package eu.insertcode.wordgames.utils;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
+import java.io.IOException;
 
 public class ConfigManager {
 	
@@ -45,6 +45,7 @@ public class ConfigManager {
 	public static FileConfiguration getMessages() {
 		return messages;
 	}
+	
 	public static void saveMessages() {
 		try {
 			messages.save(messagesFile);
@@ -52,8 +53,9 @@ public class ConfigManager {
 			e.printStackTrace();
 		}
 	}
+	
 	public static void reloadMessages() {
 		messages = YamlConfiguration.loadConfiguration(messagesFile);
 	}
-
+	
 }

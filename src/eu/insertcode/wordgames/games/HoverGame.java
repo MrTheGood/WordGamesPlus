@@ -1,23 +1,23 @@
 package eu.insertcode.wordgames.games;
 
-import static org.bukkit.ChatColor.translateAlternateColorCodes;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.utils.ConfigManager;
 
+import static org.bukkit.ChatColor.translateAlternateColorCodes;
+
 public class HoverGame extends WordGame {
 	private final static String DELIMITER = "((?<=\\Q%1$s\\E)|(?=\\Q%1$s\\E))";
-	List<String> showedMessages = new ArrayList<>();
 	private static final String PERMISSION_PLAY_TYPE = "permission.play.hover";
 	private static final String PERMISSION_START_TYPE = "permission.start.hover";
-
+	private List<String> showedMessages = new ArrayList<>();
+	
 	public HoverGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
 		
@@ -26,7 +26,7 @@ public class HoverGame extends WordGame {
 		for (String message : messages) {
 			//Replace the variables with the correct values.
 			message = message.replace("{plugin}", ConfigManager.getMessages().getString("variables.plugin")).replace("{amount}", "" + reward.getAmount()).replace("{reward}", reward.getReward());
-
+			
 			//Split the string just before and just after {word}
 			String[] inProgress = message.split(String.format(DELIMITER, "{word}"));
 			
@@ -50,14 +50,15 @@ public class HoverGame extends WordGame {
 		}
 	}
 	
+	public static boolean hasStartPermission(CommandSender s) {
+		return WordGame.hasStartPermission(s) || s.hasPermission(PERMISSION_START_TYPE);
+	}
+	
 	@Override
 	public boolean hasPlayPermission(Player p) {
 		return super.hasPlayPermission(p) || p.hasPermission(PERMISSION_PLAY_TYPE);
 	}
-	public static boolean hasStartPermission(CommandSender s) {
-		return WordGame.hasStartPermission(s) || s.hasPermission(PERMISSION_START_TYPE);
-	}
-
+	
 	@Override
 	public void sendGameMessage() {
 		for (String message : showedMessages) {
@@ -66,5 +67,5 @@ public class HoverGame extends WordGame {
 			}
 		}
 	}
-
+	
 }

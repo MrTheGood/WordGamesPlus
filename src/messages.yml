@@ -24,8 +24,14 @@ games:
   hover:
   - '{plugin} &2Hover with your mouse over &a{word}&2 word and type &2it as fast as possible!'
   - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+  timed:
+    start:
+    - '{plugin} &2Quick! Everyone that types &a{word}&2 within &a{seconds} seconds&2, wins a reward!'
+    - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+    stop:
+    - '{plugin} &2The &a{seconds} seconds&2 are over now. Congratulations to everyone that won!'
   gameWon:
-  - '{plugin} &a{player}&2 has won by guessing the right word: &a"{word}"&2! Reward: &a{aantal}x {reward}&2!'
+  - '{plugin} &a{player}&2 has won by guessing the right word: &a"{word}"&2! Reward: &a{amount}x {reward}&2!'
   stop: '{plugin} &4All WordGames have been stopped.'
 
 

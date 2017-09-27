@@ -1,10 +1,10 @@
 package eu.insertcode.wordgames.compatibility;
 
-import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
-import org.bukkit.entity.Player;
-
 import net.minecraft.server.v1_10_R1.IChatBaseComponent;
 import net.minecraft.server.v1_10_R1.PacketPlayOutChat;
+
+import org.bukkit.craftbukkit.v1_10_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
 
 public class Compatibility_1_10_R1 implements Compatibility {
 	

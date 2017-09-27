@@ -1,12 +1,13 @@
 package eu.insertcode.wordgames.utils;
 
-import java.util.List;
-
 import org.bukkit.Bukkit;
+
+import java.util.List;
 
 import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.games.HoverGame;
 import eu.insertcode.wordgames.games.ReorderGame;
+import eu.insertcode.wordgames.games.TimedGame;
 import eu.insertcode.wordgames.games.UnmuteGame;
 import eu.insertcode.wordgames.games.WordGame;
 import eu.insertcode.wordgames.games.WordGame.Reward;
@@ -18,7 +19,7 @@ public class WordGameUtils {
 		plugin = instance;
 	}
 	
-
+	
 	public static void autoStart() {
 		if (!plugin.getConfig().getBoolean("autoStart.enabled")) {
 			// Warn the console that it is disabled.
@@ -26,46 +27,45 @@ public class WordGameUtils {
 			return;
 		}
 		
-		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, new Runnable() {
-			public void run() {
-				// If there already are games playing or there are not enough players online,
-				if (plugin.wordGames.size() > 0 || Bukkit.getOnlinePlayers().size() < plugin.getConfig().getInt("autoStart.minimumPlayers"))
-					return;
-				
-				String wordToType = WordGameUtils.getRandomWordToType();
-				Reward reward = WordGameUtils.getRandomReward();
-				
-				// Test if this shit isn't null..
-				if (reward == null || wordToType == null) {
-					Bukkit.getConsoleSender().sendMessage(Utils.getColouredMessages("error.configWrong"));
-					return;
-				}
-				
-				plugin.wordGames.add(WordGameUtils.getRandomGameType(wordToType, reward));
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
+			// If there already are games playing or there are not enough players online,
+			if (plugin.wordGames.size() > 0 || Bukkit.getOnlinePlayers().size() < plugin.getConfig().getInt("autoStart.minimumPlayers"))
+				return;
+			
+			String wordToType = WordGameUtils.getRandomWordToType();
+			Reward reward = WordGameUtils.getRandomReward();
+			
+			// Test if this shit isn't null..
+			if (reward == null || wordToType == null) {
+				Bukkit.getConsoleSender().sendMessage(Utils.getColouredMessages("error.configWrong"));
 				return;
 			}
+			
+			plugin.wordGames.add(WordGameUtils.getRandomGameType(wordToType, reward));
 		}, 20 * 10, plugin.getConfig().getLong("gameOptions.scheduler.timerInSeconds") * 20);
 	}
 	
 	
-	public static WordGame getRandomGameType(String wordToType, Reward reward) {
-		switch ((int) Math.ceil(Math.random() * 3)) {
+	private static WordGame getRandomGameType(String wordToType, Reward reward) {
+		switch ((int) Math.ceil(Math.random() * 4)) {
 			case 1:
 				return new HoverGame(plugin, wordToType, reward);
 			case 2:
 				return new ReorderGame(plugin, wordToType, reward);
+			case 3:
+				return new TimedGame(plugin, wordToType, reward);
 			default:
 				return new UnmuteGame(plugin, wordToType, reward);
 		}
 	}
 	
-	public static String getRandomWordToType() {
+	private static String getRandomWordToType() {
 		List<String> words = plugin.getConfig().getStringList("autoStart.words");
 		return words.isEmpty() ? null : words.get((int) Math.floor(Math.random() * words.size()));
 	}
 	
 	
-	public static Reward getRandomReward() {
+	private static Reward getRandomReward() {
 		List<String> rewards = plugin.getConfig().getStringList("autoStart.rewards");
 		
 		if (rewards.isEmpty()) return null;//Config wrong

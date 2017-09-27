@@ -1,12 +1,12 @@
 package eu.insertcode.wordgames.utils;
 
-import static org.bukkit.ChatColor.translateAlternateColorCodes;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
+import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
 /**
  * @author Maarten de Goede - insertCode.eu Utility class
@@ -15,7 +15,7 @@ public class Utils {
 	
 	public static String reorderString(String string) {
 		// Reorder the input.
-		List<Character> characters = new ArrayList<Character>();
+		List<Character> characters = new ArrayList<>();
 		for (char c : string.toCharArray()) {
 			characters.add(c);
 		}
@@ -29,7 +29,7 @@ public class Utils {
 	}
 	
 	public static String muteString(String string, Double percentage) {
-		List<Character> characters = new ArrayList<Character>();
+		List<Character> characters = new ArrayList<>();
 		for (char c : string.toCharArray()) {
 			characters.add(c);
 		}
@@ -41,7 +41,7 @@ public class Utils {
 		for (char ch : characters) {
 			muted.append(ch);
 		}
-		while (countCharacters(muted.toString(), '*') < charactersToMute) {
+		while (countAsterisks(muted.toString()) < charactersToMute) {
 			// Calculate which letter to replace.
 			int randomChar = (int) Math.floor(Math.random() * string.length());
 			characters.set(randomChar, '*');
@@ -57,29 +57,26 @@ public class Utils {
 	}
 	
 	/**
-	 * Counts how many times a certain character is in the text.
-	 * 
-	 * @param text
-	 * @param character
-	 *            the character to count
-	 * @return how many times the character in the text is
+	 * Counts how many times an asterisk is used in the text.
+	 *
+	 * @param text The text to count asterisk usages in.
+	 * @return Number of asterisks in the text.
 	 */
-	public static int countCharacters(String text, char character) {
+	private static int countAsterisks(String text) {
 		int amount = 0;
-		int position = text.indexOf(character, 0);
+		int position = text.indexOf('*', 0);
 		while (position >= 0) {
 			amount++;
-			position = text.indexOf(character, position + 1);
+			position = text.indexOf('*', position + 1);
 		}
 		return amount;
 	}
 	
 	/**
 	 * Gets an error message from the configuration, replaces "{plugin}" with
-	 * the specified string in the configuration and translates the chatcolors.
-	 * 
-	 * @param path
-	 *            Path to the error message
+	 * the specified string in the configuration and translates the chat colours.
+	 *
+	 * @param path Path to the error message
 	 * @return translated error message.
 	 */
 	@Deprecated
@@ -91,19 +88,18 @@ public class Utils {
 	
 	/**
 	 * Gets a message from the config, puts it in an array and colours the message.
-	 * 
-	 * @param path
-	 *            The path to the message.
+	 *
+	 * @param path The path to the message.
 	 * @return A coloured String array.
 	 */
 	public static String[] getColouredMessages(String path) {
-		FileConfiguration msgconfig = ConfigManager.getMessages();
+		FileConfiguration msgConfig = ConfigManager.getMessages();
 		String[] messages;
 		messages = ConfigManager.getMessages().isList(path)
-				? msgconfig.getStringList(path).toArray(new String[0]) : new String[] { msgconfig.getString(path) };
+				? msgConfig.getStringList(path).toArray(new String[0]) : new String[]{msgConfig.getString(path)};
 		
 		for (int i = 0; i < messages.length; i++) {
-			messages[i] = messages[i].replaceAll("{plugin}", msgconfig.getString("variables.plugin"));
+			messages[i] = messages[i].replace("{plugin}", msgConfig.getString("variables.plugin"));
 			messages[i] = ChatColor.translateAlternateColorCodes('&', messages[i]);
 		}
 		

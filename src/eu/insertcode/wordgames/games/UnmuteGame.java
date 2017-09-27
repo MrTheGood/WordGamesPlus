@@ -1,16 +1,16 @@
 package eu.insertcode.wordgames.games;
 
-import static org.bukkit.ChatColor.translateAlternateColorCodes;
-
-import java.util.List;
-
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.List;
+
 import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.utils.ConfigManager;
 import eu.insertcode.wordgames.utils.Utils;
+
+import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
 public class UnmuteGame extends WordGame {
 	private static final String PERMISSION_PLAY_TYPE = "permission.play.unmute";
@@ -22,12 +22,13 @@ public class UnmuteGame extends WordGame {
 				plugin.getConfig().getDouble("gameOptions.unmute.percentageOfCharactersToMute"));
 	}
 	
+	public static boolean hasStartPermission(CommandSender s) {
+		return WordGame.hasStartPermission(s) || s.hasPermission(PERMISSION_START_TYPE);
+	}
+	
 	@Override
 	public boolean hasPlayPermission(Player p) {
 		return super.hasPlayPermission(p) || p.hasPermission(PERMISSION_PLAY_TYPE);
-	}
-	public static boolean hasStartPermission(CommandSender s) {
-		return WordGame.hasStartPermission(s) || s.hasPermission(PERMISSION_START_TYPE);
 	}
 	
 	@Override

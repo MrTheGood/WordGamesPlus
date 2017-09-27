@@ -1,12 +1,12 @@
 package eu.insertcode.wordgames;
 
-import java.util.ArrayList;
-
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.util.ArrayList;
 
 import eu.insertcode.wordgames.compatibility.Compatibility;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_10_R1;
@@ -17,20 +17,19 @@ import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R2;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R3;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_9_R1;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_9_R2;
+import eu.insertcode.wordgames.games.TimedGame;
 import eu.insertcode.wordgames.games.WordGame;
 import eu.insertcode.wordgames.utils.ConfigManager;
 import eu.insertcode.wordgames.utils.Utils;
 import eu.insertcode.wordgames.utils.WordGameUtils;
 
 /**
- * @author Maarten de Goede - insertCode.eu 
+ * @author Maarten de Goede - insertCode.eu
  * Main class
  */
 public class Main extends JavaPlugin implements Listener {
-	public ConfigManager configManager;
-	private Compatibility compatibility;
-	
 	public ArrayList<WordGame> wordGames = new ArrayList<>();
+	private Compatibility compatibility;
 	
 	@Override
 	public void onEnable() {
@@ -40,7 +39,7 @@ public class Main extends JavaPlugin implements Listener {
 			
 			ConfigManager.createFiles(this);
 			getCommand("wordgame").setExecutor(new CommandHandler(this));
-
+			
 			WordGameUtils.setPlugin(this);
 			WordGameUtils.autoStart(); // Start the autoStart scheduler.
 		} else {
@@ -93,7 +92,7 @@ public class Main extends JavaPlugin implements Listener {
 		}
 	}
 	
-	public void reload() {
+	void reload() {
 		ConfigManager.reloadMessages();
 		reloadConfig();
 	}
@@ -102,6 +101,9 @@ public class Main extends JavaPlugin implements Listener {
 		return compatibility;
 	}
 	
+	public void removeGame(WordGame game) {
+		wordGames.remove(game);
+	}
 	
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
@@ -110,7 +112,8 @@ public class Main extends JavaPlugin implements Listener {
 			WordGame wg = wordGames.get(i);
 			if (wg.checkMessage(e.getMessage(), e.getPlayer())) {
 				if (wg.hasPlayPermission(e.getPlayer())) {
-					wordGames.remove(i);
+					if (!(wg instanceof TimedGame))
+						wordGames.remove(i);
 				} else {
 					e.getPlayer().sendMessage(Utils.getColouredMessages("error.noPlayPermissions"));
 				}
