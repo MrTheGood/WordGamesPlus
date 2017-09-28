@@ -19,6 +19,7 @@ public class ReorderGame extends WordGame {
 	public ReorderGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
 		this.showedWord = Utils.reorderString(showedWord);
+		sendGameMessage();
 	}
 	
 	public static boolean hasStartPermission(CommandSender s) {

@@ -16,7 +16,7 @@ public class HoverGame extends WordGame {
 	private final static String DELIMITER = "((?<=\\Q%1$s\\E)|(?=\\Q%1$s\\E))";
 	private static final String PERMISSION_PLAY_TYPE = "permission.play.hover";
 	private static final String PERMISSION_START_TYPE = "permission.start.hover";
-	private List<String> showedMessages = new ArrayList<>();
+	List<String> showedMessages = new ArrayList<>();
 	
 	public HoverGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
@@ -48,6 +48,7 @@ public class HoverGame extends WordGame {
 			//Finish the json message
 			showedMessages.add(translateAlternateColorCodes('&', jsonMessage.append("]").toString()));
 		}
+		sendGameMessage();
 	}
 	
 	public static boolean hasStartPermission(CommandSender s) {

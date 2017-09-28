@@ -24,7 +24,7 @@ public abstract class WordGame {
 		plugin = instance;
 		this.wordToType = wordToType;
 		this.reward = reward;
-		sendGameMessage();
+		this.showedWord = wordToType;
 		startAutoBroadcaster();
 	}
 	

@@ -20,6 +20,7 @@ public class UnmuteGame extends WordGame {
 		super(instance, wordToType, reward);
 		showedWord = Utils.muteString(wordToType,
 				plugin.getConfig().getDouble("gameOptions.unmute.percentageOfCharactersToMute"));
+		sendGameMessage();
 	}
 	
 	public static boolean hasStartPermission(CommandSender s) {
