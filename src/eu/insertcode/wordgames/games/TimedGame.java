@@ -33,6 +33,7 @@ public class TimedGame extends WordGame {
 			plugin.removeGame(game);
 		}, seconds * 20);
 		sendGameMessage();
+		stopAutoBroadcaster();
 	}
 	
 	public static boolean hasStartPermission(CommandSender s) {
