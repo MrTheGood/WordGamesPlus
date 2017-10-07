@@ -1,6 +1,8 @@
 package eu.insertcode.wordgames;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -17,37 +19,34 @@ import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R2;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R3;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_9_R1;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_9_R2;
-import eu.insertcode.wordgames.games.TimedGame;
 import eu.insertcode.wordgames.games.WordGame;
-import eu.insertcode.wordgames.utils.ConfigManager;
-import eu.insertcode.wordgames.utils.Utils;
-import eu.insertcode.wordgames.utils.WordGameUtils;
 
 /**
  * @author Maarten de Goede - insertCode.eu
  * Main class
  */
 public class Main extends JavaPlugin implements Listener {
-	public ArrayList<WordGame> wordGames = new ArrayList<>();
+	ArrayList<WordGame> wordGames = new ArrayList<>();
 	private Compatibility compatibility;
 	
-	@Override
-	public void onEnable() {
-		if (setup()) {
-			// Register the plugin events in this class
-			getServer().getPluginManager().registerEvents(this, this);
-			
-			ConfigManager.createFiles(this);
-			getCommand("wordgame").setExecutor(new CommandHandler(this));
-			
-			WordGameUtils.setPlugin(this);
-			WordGameUtils.autoStart(); // Start the autoStart scheduler.
-		} else {
-			getLogger().severe("Failed to setup WordGames+!");
-			getLogger().severe("Your server version is not compatible with this plugin!");
-			
-			Bukkit.getPluginManager().disablePlugin(this);
+	/**
+	 * Gets a message from the config, puts it in an array and colours the message.
+	 *
+	 * @param path The path to the message.
+	 * @return A coloured String array.
+	 */
+	public static String[] getColouredMessages(String path) {
+		FileConfiguration msgConfig = ConfigManager.getMessages();
+		String[] messages;
+		messages = ConfigManager.getMessages().isList(path)
+				? msgConfig.getStringList(path).toArray(new String[0]) : new String[]{msgConfig.getString(path)};
+		
+		for (int i = 0; i < messages.length; i++) {
+			messages[i] = messages[i].replace("{plugin}", msgConfig.getString("variables.plugin"));
+			messages[i] = ChatColor.translateAlternateColorCodes('&', messages[i]);
 		}
+		
+		return messages;
 	}
 	
 	private boolean setup() {
@@ -62,7 +61,6 @@ public class Main extends JavaPlugin implements Listener {
 		getLogger().info("[WordGames+, insertCode] Your server is running " + version);
 		
 		switch (version) {
-			// TODO: Original used .equals(). Does this still work?
 			case "v1_12_R1":
 				compatibility = new Compatibility_1_12_R1();
 				return true;
@@ -105,20 +103,31 @@ public class Main extends JavaPlugin implements Listener {
 		wordGames.remove(game);
 	}
 	
-	@EventHandler
-	public void onPlayerChat(AsyncPlayerChatEvent e) {
-		// For all games
-		for (int i = 0; i < wordGames.size(); i++) {
-			WordGame wg = wordGames.get(i);
-			if (wg.checkMessage(e.getMessage(), e.getPlayer())) {
-				if (wg.hasPlayPermission(e.getPlayer())) {
-					if (!(wg instanceof TimedGame))
-						wordGames.remove(i);
-				} else {
-					e.getPlayer().sendMessage(Utils.getColouredMessages("error.noPlayPermissions"));
-				}
-			}
+	@Override
+	public void onEnable() {
+		if (setup()) {
+			// Register the plugin events in this class
+			getServer().getPluginManager().registerEvents(this, this);
+			
+			ConfigManager.createFiles(this);
+			getCommand("wordgame").setExecutor(new CommandHandler(this));
+			
+			AutoStart.setPlugin(this);
+			AutoStart.autoStart(); // Start the autoStart scheduler.
+		} else {
+			getLogger().severe("Failed to setup WordGames+!");
+			getLogger().severe("Your server version is not compatible with this plugin!");
+			
+			Bukkit.getPluginManager().disablePlugin(this);
 		}
 	}
 	
+	@EventHandler
+	public void onPlayerChat(AsyncPlayerChatEvent e) {
+		for (WordGame game : wordGames) {
+			if (game.hasPlayPermission(e.getPlayer()))
+				game.onPlayerChat(e);
+			else e.getPlayer().sendMessage(Main.getColouredMessages("error.noPlayPermissions"));
+		}
+	}
 }

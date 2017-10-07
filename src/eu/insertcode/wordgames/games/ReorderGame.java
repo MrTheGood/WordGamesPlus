@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import eu.insertcode.wordgames.ConfigManager;
 import eu.insertcode.wordgames.Main;
-import eu.insertcode.wordgames.utils.ConfigManager;
-import eu.insertcode.wordgames.utils.Utils;
 
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
@@ -18,7 +18,7 @@ public class ReorderGame extends WordGame {
 	
 	public ReorderGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
-		this.showedWord = Utils.reorderString(showedWord);
+		this.showedWord = reorderString(showedWord);
 		sendGameMessage();
 	}
 	
@@ -32,16 +32,28 @@ public class ReorderGame extends WordGame {
 	}
 	
 	@Override
-	public void sendGameMessage() {
-		//The type is reorder.
-		//Get the messages.
+	void sendGameMessage() {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.reorder");
 		for (String message : messages) {
-			//Replace the variables with the correct values.
-			message = message.replace("{plugin}", ConfigManager.getMessages().getString("variables.plugin")).replace("{word}", showedWord).replace("{amount}", "" + reward.getAmount()).replace("{reward}", reward.getReward());
-			//Broadcast the message.
+			message = formatGameMessage(message);
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
+	}
+	
+	
+	private String reorderString(String string) {
+		// Reorder the input.
+		List<Character> characters = new ArrayList<>();
+		for (char c : string.toCharArray()) {
+			characters.add(c);
+		}
+		StringBuilder reordered = new StringBuilder(string.length());
+		while (characters.size() != 0) {
+			int randPicker = (int) (Math.random() * characters.size());
+			reordered.append(characters.remove(randPicker));
+		}
+		
+		return "" + reordered;
 	}
 	
 }

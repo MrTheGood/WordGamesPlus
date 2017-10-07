@@ -13,7 +13,6 @@ import eu.insertcode.wordgames.games.TimedGame;
 import eu.insertcode.wordgames.games.UnmuteGame;
 import eu.insertcode.wordgames.games.WordGame;
 import eu.insertcode.wordgames.games.WordGame.Reward;
-import eu.insertcode.wordgames.utils.Utils;
 
 import static org.bukkit.ChatColor.DARK_GREEN;
 import static org.bukkit.ChatColor.DARK_RED;
@@ -108,7 +107,7 @@ public class CommandHandler implements CommandExecutor {
 		//If a game is playing.
 		if (plugin.wordGames.size() != 0) {
 			//Broadcast the stop
-			for (String msg : Utils.getColouredMessages("games.stop"))
+			for (String msg : Main.getColouredMessages("games.stop"))
 				Bukkit.broadcastMessage(msg);
 			//Stop all broadcasts
 			for (WordGame game : plugin.wordGames) {
@@ -132,12 +131,12 @@ public class CommandHandler implements CommandExecutor {
 		
 		//Reload & send a message
 		plugin.reload();
-		s.sendMessage(Utils.getColouredMessages("reload"));
+		s.sendMessage(Main.getColouredMessages("reload"));
 		return true;
 	}
 	
 	private boolean errorMessage(CommandSender s, String path) {
-		s.sendMessage(Utils.getColouredMessages(path));
+		s.sendMessage(Main.getColouredMessages(path));
 		return true;
 	}
 	

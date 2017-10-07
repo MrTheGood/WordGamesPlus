@@ -7,8 +7,8 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
+import eu.insertcode.wordgames.ConfigManager;
 import eu.insertcode.wordgames.Main;
-import eu.insertcode.wordgames.utils.ConfigManager;
 
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
@@ -16,7 +16,7 @@ public class HoverGame extends WordGame {
 	private final static String DELIMITER = "((?<=\\Q%1$s\\E)|(?=\\Q%1$s\\E))";
 	private static final String PERMISSION_PLAY_TYPE = "permission.play.hover";
 	private static final String PERMISSION_START_TYPE = "permission.start.hover";
-	List<String> showedMessages = new ArrayList<>();
+	private List<String> showedMessages = new ArrayList<>();
 	
 	public HoverGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
@@ -34,7 +34,7 @@ public class HoverGame extends WordGame {
 			StringBuilder jsonMessage = new StringBuilder("[");
 			for (int i = 0; i < inProgress.length; i++) {
 				//Create the json syntax
-				if (inProgress[i].equalsIgnoreCase("word")) {
+				if (inProgress[i].equalsIgnoreCase("{word}")) {
 					// syntax:   {"text":"config-word", "hoverEvent":{"action":"show_text", "value":"input-word"}}
 					jsonMessage.append("{\"text\":\"").append(ConfigManager.getMessages().getString("variables.HOVER")).append("\", \"hoverEvent\":{\"action\":\"show_text\", \"value\":\"").append(wordToType).append("\"}}");
 				} else {
@@ -61,7 +61,7 @@ public class HoverGame extends WordGame {
 	}
 	
 	@Override
-	public void sendGameMessage() {
+	void sendGameMessage() {
 		for (String message : showedMessages) {
 			for (Player p : Bukkit.getOnlinePlayers()) {
 				plugin.getCompatibility().sendJson(p, message);

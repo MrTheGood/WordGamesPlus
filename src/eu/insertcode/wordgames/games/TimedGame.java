@@ -3,12 +3,13 @@ package eu.insertcode.wordgames.games;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import eu.insertcode.wordgames.ConfigManager;
 import eu.insertcode.wordgames.Main;
-import eu.insertcode.wordgames.utils.ConfigManager;
-import eu.insertcode.wordgames.utils.Utils;
 
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
@@ -16,6 +17,7 @@ public class TimedGame extends WordGame {
 	private static final String PERMISSION_PLAY_TYPE = "permission.play.timed";
 	private static final String PERMISSION_START_TYPE = "permission.start.timed";
 	private int seconds = 0;
+	private ArrayList<Player> winners = new ArrayList<>();
 	
 	public TimedGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
@@ -25,8 +27,8 @@ public class TimedGame extends WordGame {
 		
 		this.seconds = plugin.getConfig().getInt("gameOptions.timed.secondsToType");
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-			for (String message : Utils.getColouredMessages("games.timed.stop"))
-				Bukkit.broadcastMessage(message);
+			for (String message : Main.getColouredMessages("games.timed.stop"))
+				Bukkit.broadcastMessage(message.replace("{seconds}", "" + seconds));
 			game.stopAutoBroadcaster();
 			plugin.removeGame(game);
 		}, seconds * 20);
@@ -43,45 +45,24 @@ public class TimedGame extends WordGame {
 	}
 	
 	@Override
-	public void sendWinnerMessage(Player winner) {
-		//Get the messages.
-		List<String> messages = ConfigManager.getMessages().getStringList("games.gameWon");
-		for (String message : messages) {
-			//Replace the variables with the correct value.
-			message = message.replace("{plugin}", ConfigManager.getMessages().getString("variables.plugin")).replace("{player}", winner.getDisplayName())
-					.replace("{word}", wordToType).replace("{amount}", "" + reward.getAmount()).replace("{reward}", reward.getReward());
-			//Broadcast the message.
-			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
-		}
-	}
-	
-	@Override
-	public void sendGameMessage() {
-		//The type is reorder.
-		//Get the messages.
+	void sendGameMessage() {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.timed.start");
 		for (String message : messages) {
-			//Replace the variables with the correct values.
-			message = message.replace("{plugin}", ConfigManager.getMessages().getString("variables.plugin"))
-					.replace("{word}", showedWord)
-					.replace("{amount}", "" + reward.getAmount())
-					.replace("{reward}", reward.getReward())
-					.replace("{seconds}", "" + seconds);
-			//Broadcast the message.
+			message = formatGameMessage(message).replace("{seconds}", "" + seconds);
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
 	}
 	
 	@Override
-	public boolean checkMessage(String message, Player p) {
-		//If the player types the correct word.
-		if (message.equalsIgnoreCase(wordToType)) {
+	//Doesn't stop the game or send the winner message.
+	public void onPlayerChat(AsyncPlayerChatEvent e) {
+		Player p = e.getPlayer();
+		if (winners.contains(p)) return;//Prevents players from getting a reward twice.
+		if (e.getMessage().equalsIgnoreCase(wordToType)) {
 			String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
 			command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
 			Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
-			sendWinnerMessage(p);
-			return true;
+			winners.add(p);
 		}
-		return false;
 	}
 }

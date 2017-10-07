@@ -1,4 +1,4 @@
-package eu.insertcode.wordgames.utils;
+package eu.insertcode.wordgames;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;

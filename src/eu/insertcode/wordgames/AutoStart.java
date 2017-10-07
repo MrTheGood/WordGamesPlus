@@ -1,10 +1,9 @@
-package eu.insertcode.wordgames.utils;
+package eu.insertcode.wordgames;
 
 import org.bukkit.Bukkit;
 
 import java.util.List;
 
-import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.games.HoverGame;
 import eu.insertcode.wordgames.games.ReorderGame;
 import eu.insertcode.wordgames.games.TimedGame;
@@ -12,7 +11,7 @@ import eu.insertcode.wordgames.games.UnmuteGame;
 import eu.insertcode.wordgames.games.WordGame;
 import eu.insertcode.wordgames.games.WordGame.Reward;
 
-public class WordGameUtils {
+public class AutoStart {
 	private static Main plugin;
 	
 	public static void setPlugin(Main instance) {
@@ -32,16 +31,16 @@ public class WordGameUtils {
 			if (plugin.wordGames.size() > 0 || Bukkit.getOnlinePlayers().size() < plugin.getConfig().getInt("autoStart.minimumPlayers"))
 				return;
 			
-			String wordToType = WordGameUtils.getRandomWordToType();
-			Reward reward = WordGameUtils.getRandomReward();
+			String wordToType = getRandomWordToType();
+			Reward reward = getRandomReward();
 			
 			// Test if this shit isn't null..
 			if (reward == null || wordToType == null) {
-				Bukkit.getConsoleSender().sendMessage(Utils.getColouredMessages("error.configWrong"));
+				Bukkit.getConsoleSender().sendMessage(Main.getColouredMessages("error.configWrong"));
 				return;
 			}
 			
-			plugin.wordGames.add(WordGameUtils.getRandomGameType(wordToType, reward));
+			plugin.wordGames.add(getRandomGameType(wordToType, reward));
 		}, 20 * 10, plugin.getConfig().getLong("gameOptions.scheduler.timerInSeconds") * 20);
 	}
 	

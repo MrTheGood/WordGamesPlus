@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import eu.insertcode.wordgames.ConfigManager;
 import eu.insertcode.wordgames.Main;
-import eu.insertcode.wordgames.utils.ConfigManager;
-import eu.insertcode.wordgames.utils.Utils;
 
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
@@ -18,7 +18,7 @@ public class UnmuteGame extends WordGame {
 	
 	public UnmuteGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
-		showedWord = Utils.muteString(wordToType,
+		showedWord = muteString(wordToType,
 				plugin.getConfig().getDouble("gameOptions.unmute.percentageOfCharactersToMute"));
 		sendGameMessage();
 	}
@@ -32,18 +32,51 @@ public class UnmuteGame extends WordGame {
 		return super.hasPlayPermission(p) || p.hasPermission(PERMISSION_PLAY_TYPE);
 	}
 	
+	private static int countAsterisks(String text) {
+		int amount = 0;
+		int position = text.indexOf('*', 0);
+		while (position >= 0) {
+			amount++;
+			position = text.indexOf('*', position + 1);
+		}
+		return amount;
+	}
+	
 	@Override
-	public void sendGameMessage() {
-		// The type is unmute.
-		// Get the messages.
+	void sendGameMessage() {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.unmute");
 		for (String message : messages) {
-			// Replace the variables with the correct values.
-			message = message.replace("{plugin}", ConfigManager.getMessages().getString("variables.plugin"))
-					.replace("{word}", showedWord).replace("{amount}", "" + reward.getAmount()).replace("{reward}", reward.getReward());
-			// Broadcast the message.
+			message = formatGameMessage(message);
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
+	}
+	
+	private String muteString(String string, Double percentage) {
+		List<Character> characters = new ArrayList<>();
+		for (char c : string.toCharArray()) {
+			characters.add(c);
+		}
+		// Calculate how many characters should be muted.
+		int charactersToMute = (int) Math.floor(((double) string.length() / 100) * percentage) + 1;
+		
+		// Create the string
+		StringBuilder muted = new StringBuilder();
+		for (char ch : characters) {
+			muted.append(ch);
+		}
+		while (countAsterisks(muted.toString()) < charactersToMute) {
+			// Calculate which letter to replace.
+			int randomChar = (int) Math.floor(Math.random() * string.length());
+			characters.set(randomChar, '*');
+			
+			// Create the new string
+			muted.delete(0, muted.length());
+			for (char ch : characters) {
+				muted.append(ch);
+			}
+		}
+		
+		return "" + muted;
 	}
 	
 }
