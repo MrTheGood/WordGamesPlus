@@ -33,7 +33,7 @@ games:
     stop:
     - '{plugin} &2The &a{seconds} seconds&2 are over now. Congratulations to everyone that won!'
   calculate:
-  - "{plugin} &2What is &a{word}&2? Don't forget to round your answer to 2 decimals."
+  - "{plugin} &2What is &a{word}&2? Do not forget to round the answer to whole numbers."
   - '{plugin} &2Reward: &a{amount}x {reward}&2!'
   gameWon:
   - '{plugin} &a{player}&2 has won by guessing the right word: &a"{word}"&2! Reward: &a{amount}x {reward}&2!'

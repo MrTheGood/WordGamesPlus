@@ -4,8 +4,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 
 import eu.insertcode.wordgames.ConfigManager;
@@ -24,19 +22,19 @@ public class CalculateGame extends WordGame {
 		int numberTwo = (int) (Math.random() * 20) + 1;
 		switch ((int) (Math.random() * 4)) {
 			case 1:
-				this.wordToType = round((double) numberOne + numberTwo, 2) + "";
+				this.wordToType = Math.round((double) numberOne + numberTwo) + "";
 				showedWord = numberOne + " + " + numberTwo;
 				break;
 			case 2:
-				this.wordToType = round((double) numberOne - numberTwo, 2) + "";
+				this.wordToType = Math.round((double) numberOne - numberTwo) + "";
 				showedWord = numberOne + " - " + numberTwo;
 				break;
 			case 3:
-				this.wordToType = round((double) numberOne * numberTwo, 2) + "";
+				this.wordToType = Math.round((double) numberOne * numberTwo) + "";
 				showedWord = numberOne + " * " + numberTwo;
 				break;
 			default:
-				this.wordToType = round((double) numberOne / numberTwo, 2) + "";
+				this.wordToType = Math.round((double) numberOne / numberTwo) + "";
 				showedWord = numberOne + " / " + numberTwo;
 		}
 		sendGameMessage();
@@ -58,13 +56,5 @@ public class CalculateGame extends WordGame {
 			message = formatGameMessage(message, showedWord);
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
-	}
-	
-	private double round(double value, int places) {
-		if (places < 0) throw new IllegalArgumentException();
-		
-		BigDecimal bd = new BigDecimal(value);
-		bd = bd.setScale(places, RoundingMode.HALF_UP);
-		return bd.doubleValue();
 	}
 }
