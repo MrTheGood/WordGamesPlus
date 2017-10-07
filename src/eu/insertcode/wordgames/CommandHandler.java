@@ -7,6 +7,7 @@ import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 
+import eu.insertcode.wordgames.games.CalculateGame;
 import eu.insertcode.wordgames.games.HoverGame;
 import eu.insertcode.wordgames.games.ReorderGame;
 import eu.insertcode.wordgames.games.TimedGame;
@@ -40,27 +41,34 @@ public class CommandHandler implements CommandExecutor {
 			}
 			
 			/*
-			 * wordgames (type) [amount] (reward)
+			 * wordgames <type> <word> [amount] <reward>
 			 */
-			if (args.length >= 3) {
+			if (args.length >= 2) {
 				//If the wordgames limit has been reached,
-				if (plugin.wordGames.size() >= plugin.getConfig().getInt("gameOptions.maxPlayingGames")
-						&& plugin.getConfig().getInt("gameOptions.maxPlayingGames") != 0) {
+				int maxPlayingGames = plugin.getConfig().getInt("gameOptions.maxPlayingGames");
+				if (plugin.wordGames.size() >= maxPlayingGames
+						&& maxPlayingGames > 0) {
 					return errorMessage(s, "error.tooManyGames");
 				}
 				
 				//Test which wordgame the user is trying to create
-				if (args[0].equalsIgnoreCase("hover")) {
-					return HoverGame.hasStartPermission(s) ? createGame(s, args, Type.HOVER) : errorMessage(s, "error.noPermissions");
+				if (args[0].equalsIgnoreCase("calculate")) {
+					// wordgames <type> [amount] <reward>
+					return CalculateGame.hasStartPermission(s) ? createCalculateGame(s, args) : errorMessage(s, "error.noPermissions");
 				}
-				if (args[0].equalsIgnoreCase("reorder")) {
-					return ReorderGame.hasStartPermission(s) ? createGame(s, args, Type.REORDER) : errorMessage(s, "error.noPermissions");
-				}
-				if (args[0].equalsIgnoreCase("unmute")) {
-					return UnmuteGame.hasStartPermission(s) ? createGame(s, args, Type.UNMUTE) : errorMessage(s, "error.noPermissions");
-				}
-				if (args[0].equalsIgnoreCase("timed")) {
-					return TimedGame.hasStartPermission(s) ? createGame(s, args, Type.TIMED) : errorMessage(s, "error.noPermissions");
+				if (args.length >= 3) {
+					if (args[0].equalsIgnoreCase("hover")) {
+						return HoverGame.hasStartPermission(s) ? createGame(s, args, Type.HOVER) : errorMessage(s, "error.noPermissions");
+					}
+					if (args[0].equalsIgnoreCase("reorder")) {
+						return ReorderGame.hasStartPermission(s) ? createGame(s, args, Type.REORDER) : errorMessage(s, "error.noPermissions");
+					}
+					if (args[0].equalsIgnoreCase("unmute")) {
+						return UnmuteGame.hasStartPermission(s) ? createGame(s, args, Type.UNMUTE) : errorMessage(s, "error.noPermissions");
+					}
+					if (args[0].equalsIgnoreCase("timed")) {
+						return TimedGame.hasStartPermission(s) ? createGame(s, args, Type.TIMED) : errorMessage(s, "error.noPermissions");
+					}
 				}
 				
 				return errorMessage(s, "error.typeNotFound");
@@ -92,6 +100,9 @@ public class CommandHandler implements CommandExecutor {
 		
 		if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.timed"))
 			s.sendMessage(GREEN + "/wordgames timed <word> [number] <reward>" + DARK_GREEN + " to start the 'timed' minigame.");
+		
+		if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.calculate"))
+			s.sendMessage(GREEN + "/wordgames calculate [number] <reward>" + DARK_GREEN + " to start the 'calculate' minigame.");
 		
 		
 		s.sendMessage(GOLD + "[" + DARK_RED + "WordGames+" + GOLD + "]" + DARK_GREEN + " Plugin version: " + plugin.getDescription().getVersion());
@@ -178,6 +189,27 @@ public class CommandHandler implements CommandExecutor {
 			default:
 				return false;
 		}
+	}
+	
+	private boolean createCalculateGame(CommandSender s, String[] args) {
+		String rewardString;
+		int amount;
+		//If the user filled an reward amount in.
+		if (args.length < 3) {
+			rewardString = args[1];
+			amount = 1;
+		} else {
+			try {
+				amount = Integer.parseInt(args[1]);
+			} catch (NumberFormatException e) {
+				return errorMessage(s, "error.wrongInput");
+			}
+			rewardString = args[2];
+		}
+		
+		Reward reward = new Reward(amount, rewardString);
+		plugin.wordGames.add(new CalculateGame(plugin, "", reward));
+		return true;
 	}
 	
 	private enum Type {HOVER, REORDER, UNMUTE, TIMED}

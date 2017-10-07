@@ -32,13 +32,16 @@ games:
     - '{plugin} &2Congratulations! You typed the word in time. Here is your reward.'
     stop:
     - '{plugin} &2The &a{seconds} seconds&2 are over now. Congratulations to everyone that won!'
+  calculate:
+  - "{plugin} &2What is &a{word}&2? Don't forget to round your answer to 2 decimals."
+  - '{plugin} &2Reward: &a{amount}x {reward}&2!'
   gameWon:
   - '{plugin} &a{player}&2 has won by guessing the right word: &a"{word}"&2! Reward: &a{amount}x {reward}&2!'
   stop: '{plugin} &4All WordGames have been stopped.'
 
 
 error:
-  noPlayPermissions: '{plugin} &4Congratulations! You guessed the right word! Unfortunatly you do not have the permissions to participate in this particular wordgame type.'
+  noPlayPermissions: '{plugin} &4Congratulations! You guessed the right word! Unfortunately you do not have the permissions to participate in this particular wordgame type.'
   noPermissions: '{plugin} &4You do not have the permissions to execute that command.'
   typeNotFound: '{plugin} &4Error 404: Type not found! Usage: /wordgame <help>'
   wrongInput: '{plugin} &4Syntax error. Usage: /wordgame <help>'

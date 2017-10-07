@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 
 import java.util.List;
 
+import eu.insertcode.wordgames.games.CalculateGame;
 import eu.insertcode.wordgames.games.HoverGame;
 import eu.insertcode.wordgames.games.ReorderGame;
 import eu.insertcode.wordgames.games.TimedGame;
@@ -46,13 +47,15 @@ public class AutoStart {
 	
 	
 	private static WordGame getRandomGameType(String wordToType, Reward reward) {
-		switch ((int) Math.ceil(Math.random() * 4)) {
+		switch ((int) Math.ceil(Math.random() * 5)) {
 			case 1:
 				return new HoverGame(plugin, wordToType, reward);
 			case 2:
 				return new ReorderGame(plugin, wordToType, reward);
 			case 3:
 				return new TimedGame(plugin, wordToType, reward);
+			case 4:
+				return new CalculateGame(plugin, "", reward);
 			default:
 				return new UnmuteGame(plugin, wordToType, reward);
 		}
