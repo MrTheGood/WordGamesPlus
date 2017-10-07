@@ -16,10 +16,10 @@ public class WordGame {
 	private static final String PERMISSION_PLAY = "wordgamesplus.play";
 	private static final String PERMISSION_START = "wordgamesplus.start";
 	protected Reward reward;        //The reward the player will get for winning.
+	protected Main plugin;
 	String showedWord,    //The word which was shown in the chat
 			wordToType;            //The correct word
 	private int schedulerID;        //The ID of the scheduled task
-	protected Main plugin;
 	
 	WordGame(Main instance, String wordToType, Reward reward) {
 		plugin = instance;
