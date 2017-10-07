@@ -50,7 +50,7 @@ public class TimedGame extends WordGame {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.timed.gameWon");
 		for (String message : messages) {
 			message = formatGameMessage(message).replace("{player}", winner.getDisplayName());
-			winner.sendMessage(message);
+			winner.sendMessage(translateAlternateColorCodes('&', message));
 		}
 	}
 	
