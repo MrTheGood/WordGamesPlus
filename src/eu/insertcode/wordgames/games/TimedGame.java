@@ -45,6 +45,16 @@ public class TimedGame extends WordGame {
 	}
 	
 	@Override
+		//Sends a different message to the winner.
+	void sendWinnerMessage(Player winner) {
+		List<String> messages = ConfigManager.getMessages().getStringList("games.timed.gameWon");
+		for (String message : messages) {
+			message = formatGameMessage(message).replace("{player}", winner.getDisplayName());
+			winner.sendMessage(message);
+		}
+	}
+	
+	@Override
 	void sendGameMessage() {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.timed.start");
 		for (String message : messages) {
@@ -54,15 +64,16 @@ public class TimedGame extends WordGame {
 	}
 	
 	@Override
-	//Doesn't stop the game or send the winner message.
+	//Doesn't stop the game. Also prevents players from winning twice.
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		Player p = e.getPlayer();
-		if (winners.contains(p)) return;//Prevents players from getting a reward twice.
+		if (winners.contains(p)) return;
 		if (e.getMessage().equalsIgnoreCase(wordToType)) {
 			String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
 			command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
 			Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
 			winners.add(p);
+			sendWinnerMessage(p);
 		}
 	}
 }

@@ -37,28 +37,19 @@ public class WordGame {
 		return p.hasPermission(PERMISSION_PLAY);
 	}
 	
-	/**
-	 * Starts the autobroadcast.
-	 */
 	private void startAutoBroadcaster() {
 		//Send the message
 		schedulerID = Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, this::sendGameMessage, 20 * 10, plugin.getConfig().getInt("gameOptions.scheduler.timerInSeconds") * 20);
 	}
 	
-	/**
-	 * Stops the autobroadcast.
-	 */
 	public void stopAutoBroadcaster() {
 		Bukkit.getScheduler().cancelTask(schedulerID);
 	}
 	
 	void sendWinnerMessage(Player winner) {
-		//Get the messages.
 		List<String> messages = ConfigManager.getMessages().getStringList("games.gameWon");
 		for (String message : messages) {
-			//Replace the variables with the correct value.
 			message = formatGameMessage(message).replace("{player}", winner.getDisplayName());
-			//Broadcast the message.
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
 	}

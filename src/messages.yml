@@ -28,6 +28,8 @@ games:
     start:
     - '{plugin} &2Quick! Everyone that types &a{word}&2 within &a{seconds} seconds&2, wins a reward!'
     - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+    gameWon:
+    - '{plugin} &2Congratulations! You typed the word in time. Here is your reward.'
     stop:
     - '{plugin} &2The &a{seconds} seconds&2 are over now. Congratulations to everyone that won!'
   gameWon:
