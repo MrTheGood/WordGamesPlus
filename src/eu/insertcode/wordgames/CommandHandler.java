@@ -56,19 +56,17 @@ public class CommandHandler implements CommandExecutor {
 					// wordgames <type> [amount] <reward>
 					return CalculateGame.hasStartPermission(s) ? createCalculateGame(s, args) : errorMessage(s, "error.noPermissions");
 				}
-				if (args.length >= 3) {
-					if (args[0].equalsIgnoreCase("hover")) {
-						return HoverGame.hasStartPermission(s) ? createGame(s, args, Type.HOVER) : errorMessage(s, "error.noPermissions");
-					}
-					if (args[0].equalsIgnoreCase("reorder")) {
-						return ReorderGame.hasStartPermission(s) ? createGame(s, args, Type.REORDER) : errorMessage(s, "error.noPermissions");
-					}
-					if (args[0].equalsIgnoreCase("unmute")) {
-						return UnmuteGame.hasStartPermission(s) ? createGame(s, args, Type.UNMUTE) : errorMessage(s, "error.noPermissions");
-					}
-					if (args[0].equalsIgnoreCase("timed")) {
-						return TimedGame.hasStartPermission(s) ? createGame(s, args, Type.TIMED) : errorMessage(s, "error.noPermissions");
-					}
+				if (args[0].equalsIgnoreCase("hover")) {
+					return HoverGame.hasStartPermission(s) ? createGame(s, args, Type.HOVER) : errorMessage(s, "error.noPermissions");
+				}
+				if (args[0].equalsIgnoreCase("reorder")) {
+					return ReorderGame.hasStartPermission(s) ? createGame(s, args, Type.REORDER) : errorMessage(s, "error.noPermissions");
+				}
+				if (args[0].equalsIgnoreCase("unmute")) {
+					return UnmuteGame.hasStartPermission(s) ? createGame(s, args, Type.UNMUTE) : errorMessage(s, "error.noPermissions");
+				}
+				if (args[0].equalsIgnoreCase("timed")) {
+					return TimedGame.hasStartPermission(s) ? createGame(s, args, Type.TIMED) : errorMessage(s, "error.noPermissions");
 				}
 				
 				return errorMessage(s, "error.typeNotFound");
