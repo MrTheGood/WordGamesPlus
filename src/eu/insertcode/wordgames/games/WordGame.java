@@ -49,14 +49,14 @@ public class WordGame {
 	void sendWinnerMessage(Player winner) {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.gameWon");
 		for (String message : messages) {
-			message = formatGameMessage(message).replace("{player}", winner.getDisplayName());
+			message = formatGameMessage(message, wordToType).replace("{player}", winner.getDisplayName());
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
 	}
 	
-	String formatGameMessage(String message) {
+	String formatGameMessage(String message, String word) {
 		return message.replace("{plugin}", ConfigManager.getMessages().getString("variables.plugin"))
-				.replace("{word}", showedWord)
+				.replace("{word}", word)
 				.replace("{amount}", "" + reward.getAmount())
 				.replace("{reward}", reward.getReward());
 	}
@@ -64,7 +64,7 @@ public class WordGame {
 	void sendGameMessage() {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.timed.start");
 		for (String message : messages) {
-			message = formatGameMessage(message);
+			message = formatGameMessage(message, showedWord);
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
 	}

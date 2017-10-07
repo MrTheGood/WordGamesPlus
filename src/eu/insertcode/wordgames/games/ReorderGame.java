@@ -35,7 +35,7 @@ public class ReorderGame extends WordGame {
 	void sendGameMessage() {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.reorder");
 		for (String message : messages) {
-			message = formatGameMessage(message);
+			message = formatGameMessage(message, showedWord);
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
 	}

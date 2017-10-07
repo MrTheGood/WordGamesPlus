@@ -55,7 +55,7 @@ public class CalculateGame extends WordGame {
 	void sendGameMessage() {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.calculate");
 		for (String message : messages) {
-			message = formatGameMessage(message);
+			message = formatGameMessage(message, showedWord);
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
 	}

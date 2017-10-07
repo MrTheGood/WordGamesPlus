@@ -46,7 +46,7 @@ public class UnmuteGame extends WordGame {
 	void sendGameMessage() {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.unmute");
 		for (String message : messages) {
-			message = formatGameMessage(message);
+			message = formatGameMessage(message, showedWord);
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
 	}

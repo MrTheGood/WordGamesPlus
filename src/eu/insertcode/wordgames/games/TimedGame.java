@@ -49,7 +49,7 @@ public class TimedGame extends WordGame {
 	void sendWinnerMessage(Player winner) {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.timed.gameWon");
 		for (String message : messages) {
-			message = formatGameMessage(message).replace("{player}", winner.getDisplayName());
+			message = formatGameMessage(message, wordToType).replace("{player}", winner.getDisplayName());
 			winner.sendMessage(translateAlternateColorCodes('&', message));
 		}
 	}
@@ -58,7 +58,7 @@ public class TimedGame extends WordGame {
 	void sendGameMessage() {
 		List<String> messages = ConfigManager.getMessages().getStringList("games.timed.start");
 		for (String message : messages) {
-			message = formatGameMessage(message).replace("{seconds}", "" + seconds);
+			message = formatGameMessage(message, showedWord).replace("{seconds}", "" + seconds);
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
 	}
