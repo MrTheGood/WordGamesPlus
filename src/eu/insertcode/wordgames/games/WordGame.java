@@ -70,16 +70,18 @@ public class WordGame {
 	}
 	
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
-		Player p = e.getPlayer();
-		//If the player types the correct word.
-		if (e.getMessage().equalsIgnoreCase(wordToType)) {
-			String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
-			command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
-			Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
-			sendWinnerMessage(p);
-			stopAutoBroadcaster();
-			plugin.removeGame(this);
-		}
+		Bukkit.getScheduler().runTask(plugin, () -> {
+			Player p = e.getPlayer();
+			//If the player types the correct word.
+			if (e.getMessage().equalsIgnoreCase(wordToType)) {
+				String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
+				command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
+				Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
+				sendWinnerMessage(p);
+				stopAutoBroadcaster();
+				plugin.removeGame(this);
+			}
+		});
 	}
 	
 	public static class Reward {

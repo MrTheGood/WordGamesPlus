@@ -67,14 +67,16 @@ public class TimedGame extends WordGame {
 	@Override
 	//Doesn't stop the game. Also prevents players from winning twice.
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
-		Player p = e.getPlayer();
-		if (winners.contains(p)) return;
-		if (e.getMessage().equalsIgnoreCase(wordToType)) {
-			String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
-			command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
-			Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
-			winners.add(p);
-			sendWinnerMessage(p);
-		}
+		Bukkit.getScheduler().runTask(plugin, () -> {
+			Player p = e.getPlayer();
+			if (winners.contains(p)) return;
+			if (e.getMessage().equalsIgnoreCase(wordToType)) {
+				String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
+				command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
+				Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
+				winners.add(p);
+				sendWinnerMessage(p);
+			}
+		});
 	}
 }
