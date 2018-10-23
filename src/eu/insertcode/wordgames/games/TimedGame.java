@@ -16,8 +16,8 @@ import static org.bukkit.ChatColor.translateAlternateColorCodes;
 public class TimedGame extends WordGame {
 	private static final String PERMISSION_PLAY_TYPE = "permission.play.timed";
 	private static final String PERMISSION_START_TYPE = "permission.start.timed";
-	private int seconds = 0;
-	private ArrayList<Player> winners = new ArrayList<>();
+	private final int seconds;
+	private final ArrayList<Player> winners = new ArrayList<>();
 	
 	public TimedGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);

@@ -11,11 +11,12 @@ import java.io.IOException;
 
 public class ConfigManager {
 	
-	private static File configFile, messagesFile;
-	private static FileConfiguration config, messages;
+	private static File messagesFile;
+	private static FileConfiguration messages;
 	
-	public static void createFiles(JavaPlugin p) {
-		configFile = new File(p.getDataFolder(), "config.yml");
+	@SuppressWarnings("ResultOfMethodCallIgnored")
+	static void createFiles(JavaPlugin p) {
+		File configFile = new File(p.getDataFolder(), "config.yml");
 		messagesFile = new File(p.getDataFolder(), "messages.yml");
 		
 		if (!configFile.exists()) {
@@ -29,7 +30,7 @@ public class ConfigManager {
 			Bukkit.getConsoleSender().sendMessage("[<WordGames+, insertCode>] messages.yml not found. Creating...");
 		}
 		
-		config = new YamlConfiguration();
+		FileConfiguration config = new YamlConfiguration();
 		messages = new YamlConfiguration();
 		try {
 			config.load(configFile);
@@ -46,15 +47,7 @@ public class ConfigManager {
 		return messages;
 	}
 	
-	public static void saveMessages() {
-		try {
-			messages.save(messagesFile);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static void reloadMessages() {
+	static void reloadMessages() {
 		messages = YamlConfiguration.loadConfiguration(messagesFile);
 	}
 	

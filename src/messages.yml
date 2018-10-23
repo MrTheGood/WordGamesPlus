@@ -11,14 +11,14 @@ variables:
   plugin: '&6[&cWordGames+&6]&r'
   #
   #This is what will replace '{word}' in the hover game type.
-  HOVER: '&athis' 
+  HOVER: '&athis'
 
 
 games:
-  reorder: 
+  reorder:
   - '{plugin} &2Reorder the following letters to make a word: &a{word}&2.'
   - '{plugin} &2Reward: &a{amount}x {reward}&2!'
-  unmute: 
+  unmute:
   - '{plugin} &2Unmute the following word: &a{word}&2.'
   - '{plugin} &2Reward: &a{amount}x {reward}&2!'
   hover:

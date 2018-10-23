@@ -34,7 +34,7 @@ public class UnmuteGame extends WordGame {
 	
 	private static int countAsterisks(String text) {
 		int amount = 0;
-		int position = text.indexOf('*', 0);
+		int position = text.indexOf('*');
 		while (position >= 0) {
 			amount++;
 			position = text.indexOf('*', position + 1);

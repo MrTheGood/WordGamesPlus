@@ -12,7 +12,7 @@ import eu.insertcode.wordgames.games.UnmuteGame;
 import eu.insertcode.wordgames.games.WordGame;
 import eu.insertcode.wordgames.games.WordGame.Reward;
 
-public class AutoStart {
+class AutoStart {
 	private static Main plugin;
 	
 	public static void setPlugin(Main instance) {
@@ -20,7 +20,7 @@ public class AutoStart {
 	}
 	
 	
-	public static void autoStart() {
+	static void autoStart() {
 		if (!plugin.getConfig().getBoolean("autoStart.enabled")) {
 			// Warn the console that it is disabled.
 			Bukkit.getConsoleSender().sendMessage("[<WordGames+, insertCode>] autoStart is NOT enabled. Please edit the configuration if you want to enable it.");

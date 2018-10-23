@@ -21,7 +21,7 @@ import static org.bukkit.ChatColor.GOLD;
 import static org.bukkit.ChatColor.GREEN;
 
 public class CommandHandler implements CommandExecutor {
-	private Main plugin;
+	private final Main plugin;
 	
 	CommandHandler(Main instance) {
 		plugin = instance;
@@ -77,6 +77,7 @@ public class CommandHandler implements CommandExecutor {
 		return onCommandHelp(s);
 	}
 	
+	@SuppressWarnings("SameReturnValue")
 	private boolean onCommandHelp(CommandSender s) {
 		s.sendMessage(GREEN + "/wordgames help" + DARK_GREEN + "  to show this message.");
 		
@@ -144,6 +145,7 @@ public class CommandHandler implements CommandExecutor {
 		return true;
 	}
 	
+	@SuppressWarnings("SameReturnValue")
 	private boolean errorMessage(CommandSender s, String path) {
 		s.sendMessage(Main.getColouredMessages(path));
 		return true;

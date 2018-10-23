@@ -15,8 +15,8 @@ import static org.bukkit.ChatColor.translateAlternateColorCodes;
 public class WordGame {
 	private static final String PERMISSION_PLAY = "wordgamesplus.play";
 	private static final String PERMISSION_START = "wordgamesplus.start";
-	protected Reward reward;        //The reward the player will get for winning.
-	protected Main plugin;
+	final Reward reward;        //The reward the player will get for winning.
+	final Main plugin;
 	String showedWord,    //The word which was shown in the chat
 			wordToType;            //The correct word
 	private int schedulerID;        //The ID of the scheduled task
@@ -93,11 +93,11 @@ public class WordGame {
 			this.reward = reward;
 		}
 		
-		public int getAmount() {
+		int getAmount() {
 			return amount;
 		}
 		
-		public String getReward() {
+		String getReward() {
 			return reward;
 		}
 	}
