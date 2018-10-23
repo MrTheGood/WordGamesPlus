@@ -1,15 +1,13 @@
 package eu.insertcode.wordgames.games;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import eu.insertcode.wordgames.Main;
+import eu.insertcode.wordgames.Permission;
 
 public abstract class WordGame {
-	private static final String PERMISSION_PLAY = "wordgamesplus.play";
-	private static final String PERMISSION_START = "wordgamesplus.start";
 	final Reward reward;
 	final Main plugin;
 	String showedWord,
@@ -22,15 +20,6 @@ public abstract class WordGame {
 		this.showedWord = wordToType;
 	}
 	
-	static boolean hasStartPermission(CommandSender s) {
-		return s.hasPermission(PERMISSION_START);
-	}
-	
-	public boolean hasPlayPermission(Player p) {
-		return p.hasPermission(PERMISSION_PLAY);
-	}
-	
-	
 	public void endGame() {
 		plugin.removeGame(this);
 	}
@@ -42,6 +31,8 @@ public abstract class WordGame {
 			Bukkit.broadcastMessage(message);
 		}
 	}
+	
+	public abstract Permission getPlayPermission();
 	
 	abstract String getMessageConfigPath();
 	

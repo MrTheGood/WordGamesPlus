@@ -1,16 +1,12 @@
 package eu.insertcode.wordgames.games;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import eu.insertcode.wordgames.Main;
+import eu.insertcode.wordgames.Permission;
 
 public class UnmuteGame extends LongWordGame {
-	private static final String PERMISSION_PLAY_TYPE = "permission.play.unmute";
-	private static final String PERMISSION_START_TYPE = "permission.start.unmute";
 	
 	public UnmuteGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
@@ -21,13 +17,9 @@ public class UnmuteGame extends LongWordGame {
 		sendGameMessage();
 	}
 	
-	public static boolean hasStartPermission(CommandSender s) {
-		return WordGame.hasStartPermission(s) || s.hasPermission(PERMISSION_START_TYPE);
-	}
-	
 	@Override
-	public boolean hasPlayPermission(Player p) {
-		return super.hasPlayPermission(p) || p.hasPermission(PERMISSION_PLAY_TYPE);
+	public Permission getPlayPermission() {
+		return Permission.PLAY_UNMUTE;
 	}
 	
 	@Override

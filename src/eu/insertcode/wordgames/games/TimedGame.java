@@ -1,17 +1,15 @@
 package eu.insertcode.wordgames.games;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
 
 import eu.insertcode.wordgames.Main;
+import eu.insertcode.wordgames.Permission;
 
 public class TimedGame extends WordGame {
-	private static final String PERMISSION_PLAY_TYPE = "permission.play.timed";
-	private static final String PERMISSION_START_TYPE = "permission.start.timed";
 	private final int seconds;
 	private final ArrayList<Player> winners = new ArrayList<>();
 	
@@ -27,13 +25,9 @@ public class TimedGame extends WordGame {
 		sendGameMessage();
 	}
 	
-	public static boolean hasStartPermission(CommandSender s) {
-		return WordGame.hasStartPermission(s) || s.hasPermission(PERMISSION_START_TYPE);
-	}
-	
 	@Override
-	public boolean hasPlayPermission(Player p) {
-		return super.hasPlayPermission(p) || p.hasPermission(PERMISSION_PLAY_TYPE);
+	public Permission getPlayPermission() {
+		return Permission.PLAY_TIMED;
 	}
 	
 	

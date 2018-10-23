@@ -3,6 +3,7 @@ package eu.insertcode.wordgames;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
@@ -132,10 +133,11 @@ public class Main extends JavaPlugin implements Listener {
 	
 	@EventHandler
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
+		Player p = e.getPlayer();
 		for (WordGame game : wordGames) {
-			if (game.hasPlayPermission(e.getPlayer()))
+			if (Permission.PLAY_ALL.forPlayer(p, game.getPlayPermission()))
 				game.onPlayerChat(e);
-			else e.getPlayer().sendMessage(Main.getColouredMessages("error.noPlayPermissions"));
+			else p.sendMessage(Main.getColouredMessages("error.noPlayPermissions"));
 		}
 	}
 }

@@ -20,6 +20,7 @@ import static org.bukkit.ChatColor.DARK_RED;
 import static org.bukkit.ChatColor.GOLD;
 import static org.bukkit.ChatColor.GREEN;
 
+@SuppressWarnings("SameReturnValue")
 public class CommandHandler implements CommandExecutor {
 	private final Main plugin;
 	
@@ -54,19 +55,29 @@ public class CommandHandler implements CommandExecutor {
 				//Test which wordgame the user is trying to create
 				if (args[0].equalsIgnoreCase("calculate")) {
 					// wordgames <type> [amount] <reward>
-					return CalculateGame.hasStartPermission(s) ? createCalculateGame(s, args) : errorMessage(s, "error.noPermissions");
+					return Permission.START_ALL.forSender(s, Permission.START_CALCULATE)
+							? createCalculateGame(s, args)
+							: errorMessage(s, "error.noPermissions");
 				}
 				if (args[0].equalsIgnoreCase("hover")) {
-					return HoverGame.hasStartPermission(s) ? createGame(s, args, Type.HOVER) : errorMessage(s, "error.noPermissions");
+					return Permission.START_ALL.forSender(s, Permission.START_HOVER)
+							? createGame(s, args, Type.HOVER)
+							: errorMessage(s, "error.noPermissions");
 				}
 				if (args[0].equalsIgnoreCase("reorder")) {
-					return ReorderGame.hasStartPermission(s) ? createGame(s, args, Type.REORDER) : errorMessage(s, "error.noPermissions");
+					return Permission.START_ALL.forSender(s, Permission.START_REORDER)
+							? createGame(s, args, Type.REORDER)
+							: errorMessage(s, "error.noPermissions");
 				}
 				if (args[0].equalsIgnoreCase("unmute")) {
-					return UnmuteGame.hasStartPermission(s) ? createGame(s, args, Type.UNMUTE) : errorMessage(s, "error.noPermissions");
+					return Permission.START_ALL.forSender(s, Permission.START_UNMUTE)
+							? createGame(s, args, Type.UNMUTE)
+							: errorMessage(s, "error.noPermissions");
 				}
 				if (args[0].equalsIgnoreCase("timed")) {
-					return TimedGame.hasStartPermission(s) ? createGame(s, args, Type.TIMED) : errorMessage(s, "error.noPermissions");
+					return Permission.START_ALL.forSender(s, Permission.START_TIMED)
+							? createGame(s, args, Type.TIMED)
+							: errorMessage(s, "error.noPermissions");
 				}
 				
 				return errorMessage(s, "error.typeNotFound");
@@ -81,26 +92,26 @@ public class CommandHandler implements CommandExecutor {
 	private boolean onCommandHelp(CommandSender s) {
 		s.sendMessage(GREEN + "/wordgames help" + DARK_GREEN + "  to show this message.");
 		
-		if (s.hasPermission("wordgamesplus.reload"))
+		if (Permission.RELOAD.forSender(s))
 			s.sendMessage(GREEN + "/wordgames reload" + DARK_GREEN + "  to reload the configuration.");
 		
-		if (s.hasPermission("wordgamesplus.stop"))
+		if (Permission.STOP.forSender(s))
 			s.sendMessage(GREEN + "/wordgames stop" + DARK_GREEN + "  to stop any and all playing games.");
 		
 		
-		if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.reorder"))
+		if (Permission.START_ALL.forSender(s, Permission.START_REORDER))
 			s.sendMessage(GREEN + "/wordgames reorder <word> [number] <reward>" + DARK_GREEN + "  to start the 'reorder' minigame.");
 		
-		if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.hover"))
+		if (Permission.START_ALL.forSender(s, Permission.START_HOVER))
 			s.sendMessage(GREEN + "/wordgames hover <word> [number] <reward>" + DARK_GREEN + " to start the 'hover' minigame.");
 		
-		if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.unmute"))
+		if (Permission.START_ALL.forSender(s, Permission.START_UNMUTE))
 			s.sendMessage(GREEN + "/wordgames unmute <word> [number] <reward>" + DARK_GREEN + " to start the 'unmute' minigame.");
 		
-		if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.timed"))
+		if (Permission.START_ALL.forSender(s, Permission.START_TIMED))
 			s.sendMessage(GREEN + "/wordgames timed <word> [number] <reward>" + DARK_GREEN + " to start the 'timed' minigame.");
 		
-		if (s.hasPermission("wordgamesplus.start") || s.hasPermission("wordgamesplus.start.calculate"))
+		if (Permission.START_ALL.forSender(s, Permission.START_CALCULATE))
 			s.sendMessage(GREEN + "/wordgames calculate [number] <reward>" + DARK_GREEN + " to start the 'calculate' minigame.");
 		
 		
@@ -110,7 +121,7 @@ public class CommandHandler implements CommandExecutor {
 	
 	private boolean onCommandStop(CommandSender s) {
 		//If the sender the required permissions
-		if (!s.hasPermission("wordgamesplus.stop")) {
+		if (!Permission.STOP.forSender(s)) {
 			return errorMessage(s, "error.noPermissions");
 		}
 		
@@ -135,7 +146,7 @@ public class CommandHandler implements CommandExecutor {
 	
 	private boolean onCommandReload(CommandSender s) {
 		//If the sender the required permissions
-		if (!s.hasPermission("wordgamesplus.reload")) {
+		if (!Permission.RELOAD.forSender(s)) {
 			return errorMessage(s, "error.noPermissions");
 		}
 		
@@ -145,7 +156,6 @@ public class CommandHandler implements CommandExecutor {
 		return true;
 	}
 	
-	@SuppressWarnings("SameReturnValue")
 	private boolean errorMessage(CommandSender s, String path) {
 		s.sendMessage(Main.getColouredMessages(path));
 		return true;
