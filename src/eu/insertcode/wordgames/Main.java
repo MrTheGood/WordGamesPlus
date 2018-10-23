@@ -14,6 +14,8 @@ import eu.insertcode.wordgames.compatibility.Compatibility;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_10_R1;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_11_R1;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_12_R1;
+import eu.insertcode.wordgames.compatibility.Compatibility_1_13_R1;
+import eu.insertcode.wordgames.compatibility.Compatibility_1_13_R2;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R1;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R2;
 import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R3;
@@ -61,6 +63,12 @@ public class Main extends JavaPlugin implements Listener {
 		getLogger().info("[WordGames+, insertCode] Your server is running " + version);
 		
 		switch (version) {
+			case "v1_13_R2":
+				compatibility = new Compatibility_1_13_R2();
+				return true;
+			case "v1_13_R1":
+				compatibility = new Compatibility_1_13_R1();
+				return true;
 			case "v1_12_R1":
 				compatibility = new Compatibility_1_12_R1();
 				return true;
