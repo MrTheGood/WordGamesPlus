@@ -11,11 +11,7 @@ public class Compatibility_1_11_R1 implements Compatibility {
 	@Override
 	public void sendJson(Player p, String json) {
 		IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a(json);
-		
-		
 		PacketPlayOutChat packet = new PacketPlayOutChat(component);
-		
-		
 		((CraftPlayer) p).getHandle().playerConnection.sendPacket(packet);
 	}
 }
