@@ -27,6 +27,7 @@ class AutoStart {
 			return;
 		}
 		
+		long seconds = plugin.getConfig().getLong("gameOptions.scheduler.timerInSeconds");
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 			// If there already are games playing or there are not enough players online,
 			if (plugin.wordGames.size() > 0 || Bukkit.getOnlinePlayers().size() < plugin.getConfig().getInt("autoStart.minimumPlayers"))
@@ -42,7 +43,7 @@ class AutoStart {
 			}
 			
 			plugin.wordGames.add(getRandomGameType(wordToType, reward));
-		}, 20 * 10, plugin.getConfig().getLong("gameOptions.scheduler.timerInSeconds") * 20);
+		}, 20 * 10, seconds * 20);
 	}
 	
 	

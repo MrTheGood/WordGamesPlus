@@ -1,25 +1,23 @@
 package eu.insertcode.wordgames.games;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.insertcode.wordgames.ConfigManager;
 import eu.insertcode.wordgames.Main;
 
-import static org.bukkit.ChatColor.translateAlternateColorCodes;
-
-public class UnmuteGame extends WordGame {
+public class UnmuteGame extends LongWordGame {
 	private static final String PERMISSION_PLAY_TYPE = "permission.play.unmute";
 	private static final String PERMISSION_START_TYPE = "permission.start.unmute";
 	
 	public UnmuteGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
-		showedWord = muteString(wordToType,
-				plugin.getConfig().getDouble("gameOptions.unmute.percentageOfCharactersToMute"));
+		
+		double charactersToMute = plugin.getConfig().getDouble("gameOptions.unmute.percentageOfCharactersToMute");
+		showedWord = muteString(wordToType, charactersToMute);
+		
 		sendGameMessage();
 	}
 	
@@ -32,6 +30,11 @@ public class UnmuteGame extends WordGame {
 		return super.hasPlayPermission(p) || p.hasPermission(PERMISSION_PLAY_TYPE);
 	}
 	
+	@Override
+	String getMessageConfigPath() {
+		return "games.unmute";
+	}
+	
 	private static int countAsterisks(String text) {
 		int amount = 0;
 		int position = text.indexOf('*');
@@ -40,15 +43,6 @@ public class UnmuteGame extends WordGame {
 			position = text.indexOf('*', position + 1);
 		}
 		return amount;
-	}
-	
-	@Override
-	void sendGameMessage() {
-		List<String> messages = ConfigManager.getMessages().getStringList("games.unmute");
-		for (String message : messages) {
-			message = formatGameMessage(message, showedWord);
-			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
-		}
 	}
 	
 	private String muteString(String string, Double percentage) {

@@ -1,18 +1,14 @@
 package eu.insertcode.wordgames.games;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.insertcode.wordgames.ConfigManager;
 import eu.insertcode.wordgames.Main;
 
-import static org.bukkit.ChatColor.translateAlternateColorCodes;
-
-public class ReorderGame extends WordGame {
+public class ReorderGame extends LongWordGame {
 	private static final String PERMISSION_PLAY_TYPE = "permission.play.reorder";
 	private static final String PERMISSION_START_TYPE = "permission.start.reorder";
 	
@@ -32,14 +28,9 @@ public class ReorderGame extends WordGame {
 	}
 	
 	@Override
-	void sendGameMessage() {
-		List<String> messages = ConfigManager.getMessages().getStringList("games.reorder");
-		for (String message : messages) {
-			message = formatGameMessage(message, showedWord);
-			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
-		}
+	String getMessageConfigPath() {
+		return "games.reorder";
 	}
-	
 	
 	private String reorderString(String string) {
 		// Reorder the input.

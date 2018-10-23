@@ -1,17 +1,11 @@
 package eu.insertcode.wordgames.games;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.List;
-
-import eu.insertcode.wordgames.ConfigManager;
 import eu.insertcode.wordgames.Main;
 
-import static org.bukkit.ChatColor.translateAlternateColorCodes;
-
-public class CalculateGame extends WordGame {
+public class CalculateGame extends LongWordGame {
 	private static final String PERMISSION_PLAY_TYPE = "permission.play.calculate";
 	private static final String PERMISSION_START_TYPE = "permission.start.calculate";
 	
@@ -50,11 +44,7 @@ public class CalculateGame extends WordGame {
 	}
 	
 	@Override
-	void sendGameMessage() {
-		List<String> messages = ConfigManager.getMessages().getStringList("games.calculate");
-		for (String message : messages) {
-			message = formatGameMessage(message, showedWord);
-			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
-		}
+	String getMessageConfigPath() {
+		return "games.calculate";
 	}
 }

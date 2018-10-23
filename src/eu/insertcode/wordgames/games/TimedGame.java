@@ -6,12 +6,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import eu.insertcode.wordgames.ConfigManager;
 import eu.insertcode.wordgames.Main;
-
-import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
 public class TimedGame extends WordGame {
 	private static final String PERMISSION_PLAY_TYPE = "permission.play.timed";
@@ -22,18 +18,13 @@ public class TimedGame extends WordGame {
 	public TimedGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
 		
-		final TimedGame game = this;
-		final Main plugin = this.plugin;
-		
 		this.seconds = plugin.getConfig().getInt("gameOptions.timed.secondsToType");
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
 			for (String message : Main.getColouredMessages("games.timed.stop"))
 				Bukkit.broadcastMessage(message.replace("{seconds}", "" + seconds));
-			game.stopAutoBroadcaster();
-			plugin.removeGame(game);
+			endGame();
 		}, seconds * 20);
 		sendGameMessage();
-		stopAutoBroadcaster();
 	}
 	
 	public static boolean hasStartPermission(CommandSender s) {
@@ -45,35 +36,39 @@ public class TimedGame extends WordGame {
 		return super.hasPlayPermission(p) || p.hasPermission(PERMISSION_PLAY_TYPE);
 	}
 	
+	
 	@Override
-		//Sends a different message to the winner.
+	String getMessageConfigPath() {
+		return "games.timed.start";
+	}
+	
+	/**
+	 * Sends a message only to the winner, and doesn't broadcast it.
+	 */
+	@Override
 	void sendWinnerMessage(Player winner) {
-		List<String> messages = ConfigManager.getMessages().getStringList("games.timed.gameWon");
+		String[] messages = Main.getColouredMessages("games.timed.gameWon");
 		for (String message : messages) {
 			message = formatGameMessage(message, wordToType).replace("{player}", winner.getDisplayName());
-			winner.sendMessage(translateAlternateColorCodes('&', message));
+			winner.sendMessage(message);
 		}
 	}
 	
+	/**
+	 * Doesn't stop the game when somebody wins.
+	 * Also prevents the same player from winning twice.
+	 */
 	@Override
-	void sendGameMessage() {
-		List<String> messages = ConfigManager.getMessages().getStringList("games.timed.start");
-		for (String message : messages) {
-			message = formatGameMessage(message, showedWord).replace("{seconds}", "" + seconds);
-			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
-		}
-	}
-	
-	@Override
-	//Doesn't stop the game. Also prevents players from winning twice.
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		Bukkit.getScheduler().runTask(plugin, () -> {
 			Player p = e.getPlayer();
 			if (winners.contains(p)) return;
+			
 			if (e.getMessage().equalsIgnoreCase(wordToType)) {
 				String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
 				command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
 				Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
+				
 				winners.add(p);
 				sendWinnerMessage(p);
 			}

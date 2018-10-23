@@ -121,7 +121,7 @@ public class CommandHandler implements CommandExecutor {
 				Bukkit.broadcastMessage(msg);
 			//Stop all broadcasts
 			for (WordGame game : plugin.wordGames) {
-				game.stopAutoBroadcaster();
+				game.endGame();
 			}
 			
 			//Stop all the games
