@@ -21,7 +21,7 @@ abstract class LongWordGame extends WordGame {
 			int endTime = plugin.getConfig().getInt("gameOptions.autoStop.timerInSeconds");
 			
 			endWordGame = Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-				for (String message : Main.getColouredMessages("games.autoStop.stop"))
+				for (String message : Main.getColouredMessages("games.autoStop"))
 					Bukkit.broadcastMessage(message.replace("{word}", wordToType));
 				endGame();
 			}, endTime * 20);

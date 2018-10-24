@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.Permission;
 
+import static org.bukkit.ChatColor.translateAlternateColorCodes;
+
 public class TimedGame extends WordGame {
 	private final int seconds;
 	private final ArrayList<Player> winners = new ArrayList<>();
@@ -18,8 +20,10 @@ public class TimedGame extends WordGame {
 		
 		this.seconds = plugin.getConfig().getInt("gameOptions.timed.secondsToType");
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-			for (String message : Main.getColouredMessages("games.timed.stop"))
-				Bukkit.broadcastMessage(message.replace("{seconds}", "" + seconds));
+			for (String message : Main.getMessages("games.timed.stop")) {
+				message = formatGameMessage(message, wordToType);
+				Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
+			}
 			endGame();
 		}, seconds * 20);
 		sendGameMessage();
@@ -36,15 +40,21 @@ public class TimedGame extends WordGame {
 		return "games.timed.start";
 	}
 	
+	@Override
+	String formatGameMessage(String message, String word) {
+		return super.formatGameMessage(message, word)
+				.replace("{seconds}", "" + seconds);
+	}
+	
 	/**
 	 * Sends a message only to the winner, and doesn't broadcast it.
 	 */
 	@Override
 	void sendWinnerMessage(Player winner) {
-		String[] messages = Main.getColouredMessages("games.timed.gameWon");
+		String[] messages = Main.getMessages("games.timed.gameWon");
 		for (String message : messages) {
 			message = formatGameMessage(message, wordToType).replace("{player}", winner.getDisplayName());
-			winner.sendMessage(message);
+			winner.sendMessage(translateAlternateColorCodes('&', message));
 		}
 	}
 	

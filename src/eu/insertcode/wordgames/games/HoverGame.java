@@ -10,6 +10,8 @@ import eu.insertcode.wordgames.ConfigManager;
 import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.Permission;
 
+import static org.bukkit.ChatColor.translateAlternateColorCodes;
+
 public class HoverGame extends LongWordGame {
 	private final static String DELIMITER = "((?<=\\Q%1$s\\E)|(?=\\Q%1$s\\E))";
 	private final List<String> showedMessages = new ArrayList<>();
@@ -17,11 +19,11 @@ public class HoverGame extends LongWordGame {
 	public HoverGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
 		
-		
-		String[] messages = Main.getColouredMessages("games.hover");
+		String[] messages = Main.getMessages("games.hover");
 		for (String message : messages) {
-			//Replace the variables with the correct values.
-			message = message.replace("{amount}", "" + reward.getAmount()).replace("{reward}", reward.getReward());
+			message = message
+					.replace("{amount}", "" + reward.getAmount())
+					.replace("{reward}", reward.getReward());
 			
 			//Split the string just before and just after {word}
 			String[] inProgress = message.split(String.format(DELIMITER, "{word}"));
@@ -39,7 +41,7 @@ public class HoverGame extends LongWordGame {
 					jsonMessage.append(",");
 			}
 			//Finish the json message
-			showedMessages.add(jsonMessage.append("]").toString());
+			showedMessages.add(translateAlternateColorCodes('&', jsonMessage.append("]").toString()));
 		}
 		sendGameMessage();
 	}

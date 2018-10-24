@@ -7,6 +7,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.Permission;
 
+import static org.bukkit.ChatColor.translateAlternateColorCodes;
+
 public abstract class WordGame {
 	final Reward reward;
 	final Main plugin;
@@ -25,10 +27,10 @@ public abstract class WordGame {
 	}
 	
 	void sendWinnerMessage(Player winner) {
-		String[] messages = Main.getColouredMessages("games.gameWon");
+		String[] messages = Main.getMessages("games.gameWon");
 		for (String message : messages) {
 			message = formatGameMessage(message, wordToType).replace("{player}", winner.getDisplayName());
-			Bukkit.broadcastMessage(message);
+			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
 	}
 	
@@ -37,9 +39,11 @@ public abstract class WordGame {
 	abstract String getMessageConfigPath();
 	
 	void sendGameMessage() {
-		String[] messages = Main.getColouredMessages(getMessageConfigPath());
-		for (String message : messages)
-			Bukkit.broadcastMessage(formatGameMessage(message, showedWord));
+		String[] messages = Main.getMessages(getMessageConfigPath());
+		for (String message : messages) {
+			message = formatGameMessage(message, showedWord);
+			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
+		}
 	}
 	
 	String formatGameMessage(String message, String word) {
