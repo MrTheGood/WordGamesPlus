@@ -15,6 +15,7 @@ variables:
 
 
 games:
+  autoStop: '{plugin} &2The WordGame has ended without a winner. The correct word was: &a{word}&2.'
   reorder:
   - '{plugin} &2Reorder the following letters to make a word: &a{word}&2.'
   - '{plugin} &2Reward: &a{amount}x {reward}&2!'

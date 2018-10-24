@@ -4,6 +4,10 @@
 # General Settings #
 ####################
 gameOptions:
+  # Whether the game should automatically be stopped after er certain amount of time. Does not apply to TimedGame.
+  autoStop:
+    enabled: false
+    timerInSeconds: 2750
   #This is the command that will be executed once someone won.
   rewardCommandSyntax: 'give {username} {reward} {amount}'
   #rewardCommandSyntax: 'money give {username} {amount}' - You could also use this to give money instead.
