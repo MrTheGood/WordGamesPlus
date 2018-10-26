@@ -1,0 +1,11 @@
+name: WordGamesPlus
+version: 1.2
+author: Maarten de Goede - insertCode.eu
+website: www.insertcode.eu
+prefix: '<WordGames+, insertCode>'
+description: Have you ever been sad because of a boring chat? Don't be! WordGames+ makes the chat happy!
+main: eu.insertcode.wordgames.Main
+commands:
+  wordgame:
+    description: Start a word game.
+    aliases: [chatgame, chatgames, wordgames, wordgamesplus]

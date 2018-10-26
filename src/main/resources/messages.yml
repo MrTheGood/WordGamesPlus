@@ -1,0 +1,48 @@
+###################
+# Language config #
+###################
+# Change the language settings here.
+
+reload: '{plugin}&a reloaded!'
+
+
+#Under the variables part, you can change what "{plugin}" gets replaced with.
+variables:
+  plugin: '&6[&cWordGames+&6]&r'
+  #
+  #This is what will replace '{word}' in the hover game type.
+  HOVER: '&athis'
+
+
+games:
+  autoStop: '{plugin} &2The WordGame has ended without a winner. The correct word was: &a{word}&2.'
+  reorder:
+  - '{plugin} &2Reorder the following letters to make a word: &a{word}&2.'
+  - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+  unmute:
+  - '{plugin} &2Unmute the following word: &a{word}&2.'
+  - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+  hover:
+  - '{plugin} &2Hover with your mouse over &a{word}&2 word and type &2it as fast as possible!'
+  - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+  timed:
+    start:
+    - '{plugin} &2Quick! Everyone that types &a{word}&2 within &a{seconds} seconds&2, wins a reward!'
+    - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+    gameWon: '{plugin} &2Congratulations! You typed the word in time. Here is your reward.'
+    stop: '{plugin} &2The &a{seconds} seconds&2 are over now. Congratulations to everyone that won!'
+  calculate:
+  - "{plugin} &2What is &a{word}&2? Do not forget to round the answer to whole numbers."
+  - '{plugin} &2Reward: &a{amount}x {reward}&2!'
+  gameWon: '{plugin} &a{player}&2 has won by guessing the right word: &a"{word}"&2! Reward: &a{amount}x {reward}&2!'
+  stop: '{plugin} &4All WordGames have been stopped.'
+
+
+error:
+  noPlayPermissions: '{plugin} &4Congratulations! You guessed the right word! Unfortunately you do not have the permissions to participate in this particular wordgame type.'
+  noPermissions: '{plugin} &4You do not have the permissions to execute that command.'
+  typeNotFound: '{plugin} &4Error 404: Type not found! Usage: /wordgame <help>'
+  wrongInput: '{plugin} &4Syntax error. Usage: /wordgame <help>'
+  notPlaying: "{plugin} &4It isn't possible to stop something that isn't there!"
+  configWrong: '{plugin} &4Something went wrong in the configuration. If you need help fixing it, please contact insertCode.'
+  tooManyGames: '{plugin} &4You cannot create any more games.'
