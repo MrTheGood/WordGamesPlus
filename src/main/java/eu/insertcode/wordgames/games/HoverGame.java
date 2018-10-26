@@ -6,9 +6,9 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.insertcode.wordgames.ConfigManager;
 import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.Permission;
+import eu.insertcode.wordgames.util.ConfigManager;
 
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 

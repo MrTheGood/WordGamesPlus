@@ -11,6 +11,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.ArrayList;
 
 import eu.insertcode.wordgames.games.WordGame;
+import eu.insertcode.wordgames.util.ConfigManager;
+import eu.insertcode.wordgames.util.Reflection;
 
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 

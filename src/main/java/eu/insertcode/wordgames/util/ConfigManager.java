@@ -1,4 +1,4 @@
-package eu.insertcode.wordgames;
+package eu.insertcode.wordgames.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.InvalidConfigurationException;
@@ -15,7 +15,7 @@ public class ConfigManager {
 	private static FileConfiguration messages;
 	
 	@SuppressWarnings("ResultOfMethodCallIgnored")
-	static void createFiles(JavaPlugin p) {
+	public static void createFiles(JavaPlugin p) {
 		File configFile = new File(p.getDataFolder(), "config.yml");
 		messagesFile = new File(p.getDataFolder(), "messages.yml");
 		
@@ -47,7 +47,7 @@ public class ConfigManager {
 		return messages;
 	}
 	
-	static void reloadMessages() {
+	public static void reloadMessages() {
 		messages = YamlConfiguration.loadConfiguration(messagesFile);
 	}
 	
