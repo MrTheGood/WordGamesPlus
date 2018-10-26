@@ -60,7 +60,7 @@ public class HoverGame extends LongWordGame {
 	void sendGameMessage() {
 		for (String message : showedMessages) {
 			for (Player p : Bukkit.getOnlinePlayers()) {
-				plugin.getCompatibility().sendJson(p, message);
+				plugin.getReflection().sendJson(p, message);
 			}
 		}
 	}

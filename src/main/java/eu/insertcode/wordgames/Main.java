@@ -10,17 +10,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.ArrayList;
 
-import eu.insertcode.wordgames.compatibility.Compatibility;
-import eu.insertcode.wordgames.compatibility.Compatibility_1_10_R1;
-import eu.insertcode.wordgames.compatibility.Compatibility_1_11_R1;
-import eu.insertcode.wordgames.compatibility.Compatibility_1_12_R1;
-import eu.insertcode.wordgames.compatibility.Compatibility_1_13_R1;
-import eu.insertcode.wordgames.compatibility.Compatibility_1_13_R2;
-import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R1;
-import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R2;
-import eu.insertcode.wordgames.compatibility.Compatibility_1_8_R3;
-import eu.insertcode.wordgames.compatibility.Compatibility_1_9_R1;
-import eu.insertcode.wordgames.compatibility.Compatibility_1_9_R2;
 import eu.insertcode.wordgames.games.WordGame;
 
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
@@ -31,7 +20,7 @@ import static org.bukkit.ChatColor.translateAlternateColorCodes;
  */
 public class Main extends JavaPlugin implements Listener {
 	ArrayList<WordGame> wordGames = new ArrayList<>();
-	private Compatibility compatibility;
+	private Reflection reflection;
 	
 	/**
 	 * Gets a message from the config and puts it in an array.
@@ -61,50 +50,14 @@ public class Main extends JavaPlugin implements Listener {
 	}
 	
 	private boolean setup() {
-		String version;
-		
-		try {
-			version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];
-		} catch (ArrayIndexOutOfBoundsException e) {
-			return false;
-		}
-		
-		getLogger().info("[WordGames+, insertCode] Your server is running " + version);
-		
-		switch (version) {
-			case "v1_13_R2":
-				compatibility = new Compatibility_1_13_R2();
-				return true;
-			case "v1_13_R1":
-				compatibility = new Compatibility_1_13_R1();
-				return true;
-			case "v1_12_R1":
-				compatibility = new Compatibility_1_12_R1();
-				return true;
-			case "v1_11_R1":
-				compatibility = new Compatibility_1_11_R1();
-				return true;
-			case "v1_10_R1":
-				compatibility = new Compatibility_1_10_R1();
-				return true;
-			case "v1_9_R2":
-				compatibility = new Compatibility_1_9_R2();
-				return true;
-			case "v1_9_R1":
-				compatibility = new Compatibility_1_9_R1();
-				return true;
-			case "v1_8_R3":
-				compatibility = new Compatibility_1_8_R3();
-				return true;
-			case "v1_8_R2":
-				compatibility = new Compatibility_1_8_R2();
-				return true;
-			case "v1_8_R1":
-				compatibility = new Compatibility_1_8_R1();
-				return true;
-			default:
-				return false;
-		}
+	    try {
+            reflection = new Reflection();
+            getLogger().info("[WordGames+, insertCode] Your server is running " + reflection.getVersion());
+            return true;
+	    } catch (Exception ex) {
+	        ex.printStackTrace();
+	        return false;
+        }
 	}
 	
 	void reload() {
@@ -112,8 +65,8 @@ public class Main extends JavaPlugin implements Listener {
 		reloadConfig();
 	}
 	
-	public Compatibility getCompatibility() {
-		return compatibility;
+	public Reflection getReflection() {
+		return reflection;
 	}
 	
 	public void removeGame(WordGame game) {
