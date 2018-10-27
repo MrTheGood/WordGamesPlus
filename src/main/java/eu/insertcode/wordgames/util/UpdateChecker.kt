@@ -2,8 +2,6 @@ package eu.insertcode.wordgames.util
 
 import com.google.gson.JsonParser
 import eu.insertcode.wordgames.Permission
-import net.md_5.bungee.api.chat.ClickEvent
-import net.md_5.bungee.api.chat.TextComponent
 import org.bukkit.ChatColor.DARK_GREEN
 import org.bukkit.ChatColor.GREEN
 import org.bukkit.event.player.PlayerJoinEvent
@@ -33,20 +31,16 @@ private fun JavaPlugin.onUpdate(callback: (version: String) -> Unit) = Thread {
 fun JavaPlugin.checkUpdate() {
     onUpdate { version ->
         val url = "https://www.spigotmc.org/resources/$RESOURCE_ID"
-        val message = TextComponent(
-                "${GREEN}Update version $version is available for $DARK_GREEN${description.name}$GREEN!\nDownload it here: $DARK_GREEN$url"
-        ).apply {
-            clickEvent = ClickEvent(ClickEvent.Action.OPEN_URL, url)
-        }
+        val message = "${GREEN}Update version $version is available for $DARK_GREEN${description.name}$GREEN!\nDownload it here: $DARK_GREEN$url"
 
         server.scheduler.runTask(this) {
-            server.consoleSender.sendMessage(message.text)
+            server.consoleSender.sendMessage(message)
         }
 
         listenFor<PlayerJoinEvent> { event ->
             event.player.apply {
                 if (Permission.UPDATE.forPlayer(player)) {
-                    player.sendMessage(message.text)
+                    player.sendMessage(message)
                 }
             }
         }
