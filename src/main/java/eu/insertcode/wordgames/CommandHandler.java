@@ -6,6 +6,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import eu.insertcode.wordgames.games.CalculateGame;
 import eu.insertcode.wordgames.games.HoverGame;
@@ -130,8 +131,10 @@ public class CommandHandler implements CommandExecutor {
 			//Broadcast the stop
 			for (String msg : Main.getColouredMessages("games.stop"))
 				Bukkit.broadcastMessage(msg);
+			
+			List<WordGame> wordGames = plugin.wordGames.subList(0, plugin.wordGames.size() - 1);
 			//Stop all broadcasts
-			for (WordGame game : plugin.wordGames) {
+			for (WordGame game : wordGames) {
 				game.endGame();
 			}
 			
