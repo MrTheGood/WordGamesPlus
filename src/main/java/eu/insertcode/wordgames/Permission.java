@@ -7,6 +7,7 @@ public enum Permission {
 	
 	STOP("wordgames.stop"),
 	RELOAD("wordgames.reload"),
+	UPDATE("wordgames.update"),
 	
 	START_ALL("wordgames.start"),
 	START_HOVER("wordgames.start.hover"),
