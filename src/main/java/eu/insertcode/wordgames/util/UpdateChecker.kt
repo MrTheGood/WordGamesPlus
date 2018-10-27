@@ -21,9 +21,11 @@ private fun JavaPlugin.onUpdate(callback: (version: String) -> Unit) = Thread {
         val json = InputStreamReader(conn.inputStream).let { JsonParser().parse(it).asJsonArray }
 
         val version = json.first().asJsonObject["name"].asString
-        if (newest(version, description.version) != description.version)
+        if (version newerThan description.version)
             callback(version)
+        else logger.info("Running latest version ${description.name}")
     } catch (e: IOException) {
+        logger.warning("Failed to check for updates..")
     }
 }.start()
 
@@ -51,23 +53,21 @@ fun JavaPlugin.checkUpdate() {
     }
 }
 
-fun newest(v1: String, v2: String): String {
-    val d1 = v1.split('.')
-    val d2 = v2.split('.')
-    for (i in 0..Math.max(d1.size, d2.size)) {
-        if (!(d1[i].isInt() && d2[i].isInt())) continue
-        if (i !in d1.indices) return v1
-        if (i !in d2.indices) return v2
-        if (d1[i].toInt() > d2[i].toInt()) return v2
-        if (d1[i].toInt() < d2[i].toInt()) return v1
-    }
-    return v1
-}
-
-fun String.isInt() =
-        try {
-            toInt()
-            true
-        } catch (e: NumberFormatException) {
-            false
+fun getVersionNumbers(ver: String) =
+        ver.split(".").map { v ->
+            try {
+                v.toInt()
+            } catch (e: NumberFormatException) {
+                val v1 = v.replace("[^0123456789]".toRegex(), "")
+                if (v1.isEmpty()) 0 else v1.toInt()
+            }
         }
+
+infix fun String.newerThan(baseFW: String) = false.also {
+    val testVer = getVersionNumbers(this)
+    val baseVer = getVersionNumbers(baseFW)
+
+    for (i in testVer.indices)
+        if (i in baseVer.indices && testVer[i] != baseVer[i])
+            return testVer[i] > baseVer[i]
+}

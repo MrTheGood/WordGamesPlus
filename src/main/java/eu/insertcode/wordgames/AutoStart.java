@@ -23,7 +23,7 @@ class AutoStart {
 	static void autoStart() {
 		if (!plugin.getConfig().getBoolean("autoStart.enabled")) {
 			// Warn the console that it is disabled.
-			Bukkit.getConsoleSender().sendMessage("[<WordGames+, insertCode>] autoStart is NOT enabled. Please edit the configuration if you want to enable it.");
+			plugin.getLogger().warning("autoStart is NOT enabled. Please edit the configuration if you want to enable it.");
 			return;
 		}
 		
