@@ -14,6 +14,7 @@ import eu.insertcode.wordgames.games.WordGame;
 import eu.insertcode.wordgames.util.ConfigManager;
 import eu.insertcode.wordgames.util.Reflection;
 
+import static eu.insertcode.wordgames.util.UpdateCheckerKt.checkUpdate;
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
 /**
@@ -52,6 +53,7 @@ public class Main extends JavaPlugin implements Listener {
 	}
 	
 	private boolean setup() {
+		checkUpdate(this);
 	    try {
             reflection = new Reflection();
             getLogger().info("[WordGames+, insertCode] Your server is running " + reflection.getVersion());
