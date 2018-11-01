@@ -14,7 +14,10 @@ public class Reflection {
     private Method componentCreatorMethod, getHandleMethod, sendPacketMethod;
     private Constructor packetConstructor;
     private Field connectionField;
-
+    
+    /**
+     * @throws RuntimeException When unable to initialize the reflection
+     */
     public Reflection() {
         try {
             version = Bukkit.getServer().getClass().getPackage().getName().replace(".", ",").split(",")[3];

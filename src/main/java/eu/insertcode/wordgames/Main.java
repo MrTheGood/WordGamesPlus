@@ -53,18 +53,6 @@ public class Main extends JavaPlugin implements Listener {
 		return messages;
 	}
 	
-	private boolean setup() {
-		checkUpdate(this);
-	    try {
-            reflection = new Reflection();
-            getLogger().info("[WordGames+, insertCode] Your server is running " + reflection.getVersion());
-            return true;
-	    } catch (Exception ex) {
-	        ex.printStackTrace();
-	        return false;
-        }
-	}
-	
 	void reload() {
 		ConfigManager.reloadMessages();
 		reloadConfig();
@@ -80,21 +68,25 @@ public class Main extends JavaPlugin implements Listener {
 	
 	@Override
 	public void onEnable() {
-		if (setup()) {
-			// Register the plugin events in this class
-			getServer().getPluginManager().registerEvents(this, this);
-			
-			ConfigManager.createFiles(this);
-			getCommand("wordgame").setExecutor(new CommandHandler(this));
-			
-			AutoStart.setPlugin(this);
-			AutoStart.autoStart(); // Start the autoStart scheduler.
-		} else {
+		try {
+			reflection = new Reflection();
+			getLogger().info("Your server is running " + reflection.getVersion());
+		} catch (RuntimeException e) {
 			getLogger().severe("Failed to setup WordGames+!");
-			getLogger().severe("Your server version is not compatible with this plugin!");
+			getLogger().severe(e.getMessage());
 			
 			Bukkit.getPluginManager().disablePlugin(this);
+			return;
 		}
+		
+		getServer().getPluginManager().registerEvents(this, this);
+		
+		ConfigManager.createFiles(this);
+		getCommand("wordgame").setExecutor(new CommandHandler(this));
+		
+		AutoStart.setPlugin(this);
+		AutoStart.autoStart();
+		checkUpdate(this);
 	}
 	
 	@EventHandler(priority = EventPriority.MONITOR)
