@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 public enum Permission {
 	
 	STOP("wordgames.stop"),
+	LIST("wordgames.list"),
 	RELOAD("wordgames.reload"),
 	UPDATE("wordgames.update"),
 	

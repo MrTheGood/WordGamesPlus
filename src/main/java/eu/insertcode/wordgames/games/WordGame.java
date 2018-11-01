@@ -38,11 +38,20 @@ public abstract class WordGame {
 	
 	abstract String getMessageConfigPath();
 	
-	void sendGameMessage() {
+	public String[] getGameMessages() {
 		String[] messages = Main.getMessages(getMessageConfigPath());
+		for (int i = 0; i < messages.length; i++) {
+			messages[i] = formatGameMessage(messages[i], showedWord);
+			messages[i] = translateAlternateColorCodes('&', messages[i]);
+			
+		}
+		return messages;
+	}
+	
+	void sendGameMessage() {
+		String[] messages = getGameMessages();
 		for (String message : messages) {
-			message = formatGameMessage(message, showedWord);
-			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
+			Bukkit.broadcastMessage(message);
 		}
 	}
 	

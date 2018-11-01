@@ -35,6 +35,9 @@ public class CommandHandler implements CommandExecutor {
 			if (args[0].equalsIgnoreCase("help")) {
 				return onCommandHelp(s);
 			}
+			if (args[0].equalsIgnoreCase("list")) {
+				return onCommandList(s);
+			}
 			if (args[0].equalsIgnoreCase("stop")) {
 				return onCommandStop(s);
 			}
@@ -96,6 +99,9 @@ public class CommandHandler implements CommandExecutor {
 		if (Permission.RELOAD.forSender(s))
 			s.sendMessage(GREEN + "/wordgames reload" + DARK_GREEN + "  to reload the configuration.");
 		
+		if (Permission.LIST.forSender(s))
+			s.sendMessage(GREEN + "/wordgames list" + DARK_GREEN + "  To see all currently playing games.");
+		
 		if (Permission.STOP.forSender(s))
 			s.sendMessage(GREEN + "/wordgames stop" + DARK_GREEN + "  to stop any and all playing games.");
 		
@@ -117,6 +123,23 @@ public class CommandHandler implements CommandExecutor {
 		
 		
 		s.sendMessage(GOLD + "[" + DARK_RED + "WordGames+" + GOLD + "]" + DARK_GREEN + " Plugin version: " + plugin.getDescription().getVersion());
+		return true;
+	}
+	
+	private boolean onCommandList(CommandSender s) {
+		//If the sender the required permissions
+		if (!Permission.LIST.forSender(s)) {
+			return errorMessage(s, "error.noPermissions");
+		}
+		
+		s.sendMessage(Main.getColouredMessages("games.list.prefix"));
+		for (int i = 0; i < plugin.wordGames.size(); i++) {
+			s.sendMessage(DARK_GREEN.toString() + i + ".");
+			for (String message : plugin.wordGames.get(i).getGameMessages()) {
+				s.sendMessage(DARK_GREEN + "   " + message);
+			}
+		}
+		s.sendMessage(Main.getColouredMessages("games.list.suffix"));
 		return true;
 	}
 	

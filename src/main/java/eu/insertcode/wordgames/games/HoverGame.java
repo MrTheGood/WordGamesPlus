@@ -56,6 +56,22 @@ public class HoverGame extends LongWordGame {
 		return null;
 	}
 	
+	/**
+	 * This version is specifically only for the console
+	 */
+	@Override
+	public String[] getGameMessages() {
+		String[] messages = Main.getMessages("games.hover");
+		for (int i = 0; i < messages.length; i++) {
+			messages[i] = messages[i]
+					.replace("{amount}", "" + reward.getAmount())
+					.replace("{reward}", reward.getReward())
+					.replace("{word}", ConfigManager.getMessages().getString("variables.HOVER") + "[" + wordToType + "]");
+			messages[i] = translateAlternateColorCodes('&', messages[i]);
+		}
+		return messages;
+	}
+	
 	@Override
 	void sendGameMessage() {
 		for (String message : showedMessages) {

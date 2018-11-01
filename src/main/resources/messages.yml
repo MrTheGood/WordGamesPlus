@@ -35,6 +35,11 @@ games:
   - "{plugin} &2What is &a{word}&2? Do not forget to round the answer to whole numbers."
   - '{plugin} &2Reward: &a{amount}x {reward}&2!'
   gameWon: '{plugin} &a{player}&2 has won by guessing the right word: &a"{word}"&2! Reward: &a{amount}x {reward}&2!'
+  list:
+    prefix:
+    - '{plugin} &2All currently playing games:'
+    - '{plugin} &2---<&aPLAYING GAMES&2>---'
+    suffix: '{plugin} &2---<&aPLAYING GAMES&2>---'
   stop: '{plugin} &4All WordGames have been stopped.'
 
 
