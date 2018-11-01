@@ -128,10 +128,6 @@ public class CommandHandler implements CommandExecutor {
 		
 		//If a game is playing.
 		if (plugin.wordGames.size() != 0) {
-			//Broadcast the stop
-			for (String msg : Main.getColouredMessages("games.stop"))
-				Bukkit.broadcastMessage(msg);
-			
 			List<WordGame> wordGames = new ArrayList<>(plugin.wordGames);
 			//Stop all broadcasts
 			for (WordGame game : wordGames) {
@@ -140,6 +136,10 @@ public class CommandHandler implements CommandExecutor {
 			
 			//Stop all the games
 			plugin.wordGames = new ArrayList<>();
+			
+			//Broadcast the stop
+			for (String msg : Main.getColouredMessages("games.stop"))
+				Bukkit.broadcastMessage(msg);
 		} else {
 			//No games are playing, tell sender!
 			return errorMessage(s, "error.notPlaying");
