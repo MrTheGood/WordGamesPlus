@@ -79,6 +79,9 @@ public class HoverGame extends LongWordGame {
 				plugin.getReflection().sendJson(p, message);
 			}
 		}
+		
+		// Send the message to the console as well
+		Bukkit.getConsoleSender().sendMessage(getGameMessages());
 	}
 	
 }
