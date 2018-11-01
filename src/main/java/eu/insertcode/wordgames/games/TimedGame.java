@@ -1,6 +1,7 @@
 package eu.insertcode.wordgames.games;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -68,7 +69,8 @@ public class TimedGame extends WordGame {
 			Player p = e.getPlayer();
 			if (winners.contains(p)) return;
 			
-			if (e.getMessage().equalsIgnoreCase(wordToType)) {
+			String message = ChatColor.stripColor(e.getMessage());
+			if (message.equalsIgnoreCase(wordToType)) {
 				String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
 				command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
 				Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
