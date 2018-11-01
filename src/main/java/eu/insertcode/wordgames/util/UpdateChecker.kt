@@ -4,6 +4,7 @@ import com.google.gson.JsonParser
 import eu.insertcode.wordgames.Permission
 import org.bukkit.ChatColor.DARK_GREEN
 import org.bukkit.ChatColor.GREEN
+import org.bukkit.event.EventPriority
 import org.bukkit.event.player.PlayerJoinEvent
 import org.bukkit.plugin.java.JavaPlugin
 import java.io.IOException
@@ -37,8 +38,8 @@ fun JavaPlugin.checkUpdate() {
             server.consoleSender.sendMessage(message)
         }
 
-        listenFor<PlayerJoinEvent> { event ->
-            event.player.apply {
+        listenFor<PlayerJoinEvent>(priority = EventPriority.MONITOR) { event ->
+            event.player.run {
                 if (Permission.UPDATE.forPlayer(player)) {
                     player.sendMessage(message)
                 }
