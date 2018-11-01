@@ -132,7 +132,7 @@ public class CommandHandler implements CommandExecutor {
 			for (String msg : Main.getColouredMessages("games.stop"))
 				Bukkit.broadcastMessage(msg);
 			
-			List<WordGame> wordGames = plugin.wordGames.subList(0, plugin.wordGames.size() - 1);
+			List<WordGame> wordGames = new ArrayList<>(plugin.wordGames);
 			//Stop all broadcasts
 			for (WordGame game : wordGames) {
 				game.endGame();
