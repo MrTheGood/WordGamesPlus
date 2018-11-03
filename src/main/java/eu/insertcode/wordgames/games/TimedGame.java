@@ -71,6 +71,12 @@ public class TimedGame extends WordGame {
 			
 			String message = ChatColor.stripColor(e.getMessage());
 			if (message.equalsIgnoreCase(wordToType)) {
+				if (Permission.PLAY_ALL.forPlayer(p, getPlayPermission())) {
+					for (String msg : Main.getColouredMessages("error.noPlayPermissions"))
+						p.sendMessage(msg);
+					return;
+				}
+				
 				String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
 				command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
 				Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);

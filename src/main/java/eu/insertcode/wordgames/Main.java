@@ -93,10 +93,7 @@ public class Main extends JavaPlugin implements Listener {
 	public void onPlayerChat(AsyncPlayerChatEvent e) {
 		Player p = e.getPlayer();
 		for (WordGame game : wordGames) {
-			if (Permission.PLAY_ALL.forPlayer(p, game.getPlayPermission()))
-				game.onPlayerChat(e);
-			else for (String message : getColouredMessages("error.noPlayPermissions"))
-				p.sendMessage(message);
+			game.onPlayerChat(e);
 		}
 	}
 }

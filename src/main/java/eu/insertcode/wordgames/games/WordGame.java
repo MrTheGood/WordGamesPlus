@@ -68,6 +68,11 @@ public abstract class WordGame {
 			//If the player types the correct word.
 			String message = ChatColor.stripColor(e.getMessage());
 			if (message.equalsIgnoreCase(wordToType)) {
+				if (Permission.PLAY_ALL.forPlayer(p, getPlayPermission())) {
+					for (String msg : Main.getColouredMessages("error.noPlayPermissions"))
+						p.sendMessage(msg);
+					return;
+				}
 				
 				String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
 				command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
@@ -80,8 +85,8 @@ public abstract class WordGame {
 	}
 	
 	public static class Reward {
-		private final int amount;        //The amount of the reward for the winner
-		private final String reward;    //The reward for the winner
+		private final int amount;
+		private final String reward;
 		
 		public Reward(int amount, String reward) {
 			this.amount = amount;
