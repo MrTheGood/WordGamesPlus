@@ -68,7 +68,7 @@ public abstract class WordGame {
 			//If the player types the correct word.
 			String message = ChatColor.stripColor(e.getMessage());
 			if (message.equalsIgnoreCase(wordToType)) {
-				if (Permission.PLAY_ALL.forPlayer(p, getPlayPermission())) {
+				if (!Permission.PLAY_ALL.forPlayer(p, getPlayPermission())) {
 					for (String msg : Main.getColouredMessages("error.noPlayPermissions"))
 						p.sendMessage(msg);
 					return;
