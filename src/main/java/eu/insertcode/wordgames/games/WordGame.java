@@ -66,7 +66,7 @@ public abstract class WordGame {
 		Bukkit.getScheduler().runTask(plugin, () -> {
 			Player p = e.getPlayer();
 			//If the player types the correct word.
-			String message = ChatColor.stripColor(e.getMessage());
+			String message = ChatColor.stripColor(e.getMessage()).trim();
 			if (message.equalsIgnoreCase(wordToType)) {
 				if (!Permission.PLAY_ALL.forPlayer(p, getPlayPermission())) {
 					for (String msg : Main.getColouredMessages("error.noPlayPermissions"))
