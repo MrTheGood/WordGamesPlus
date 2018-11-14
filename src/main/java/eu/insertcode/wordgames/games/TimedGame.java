@@ -69,7 +69,7 @@ public class TimedGame extends WordGame {
 			Player p = e.getPlayer();
 			if (winners.contains(p)) return;
 			
-			String message = ChatColor.stripColor(e.getMessage());
+			String message = ChatColor.stripColor(e.getMessage()).trim();
 			if (message.equalsIgnoreCase(wordToType)) {
 				if (!Permission.PLAY_ALL.forPlayer(p, getPlayPermission())) {
 					for (String msg : Main.getColouredMessages("error.noPlayPermissions"))
