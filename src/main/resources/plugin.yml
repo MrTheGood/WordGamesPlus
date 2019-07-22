@@ -1,5 +1,5 @@
 name: WordGamesPlus
-version: 1.3.2 #Don't forget to update the version in the build.gradle as well
+version: 1.3.3 #Don't forget to update the version in the build.gradle as well
 author: Maarten de Goede - insertCode.eu
 website: www.insertcode.eu
 prefix: '<WordGames+, insertCode>'

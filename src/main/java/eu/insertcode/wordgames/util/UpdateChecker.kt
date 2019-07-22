@@ -34,14 +34,14 @@ fun JavaPlugin.checkUpdate() {
         val url = "https://www.spigotmc.org/resources/$RESOURCE_ID"
         val message = "${GREEN}Update version $version is available for $DARK_GREEN${description.name}$GREEN!\nDownload it here: $DARK_GREEN$url"
 
-        server.scheduler.runTask(this) {
+        server.scheduler.runTask(this, Runnable {
             server.consoleSender.sendMessage(message)
-        }
+        })
 
         listenFor<PlayerJoinEvent>(priority = EventPriority.MONITOR) { event ->
             event.player.run {
                 if (Permission.UPDATE.forPlayer(player)) {
-                    player.sendMessage(message)
+                    player?.sendMessage(message)
                 }
             }
         }
