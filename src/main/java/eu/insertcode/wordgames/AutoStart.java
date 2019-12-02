@@ -1,16 +1,12 @@
 package eu.insertcode.wordgames;
 
-import org.bukkit.Bukkit;
-
-import java.util.List;
-
-import eu.insertcode.wordgames.games.CalculateGame;
-import eu.insertcode.wordgames.games.HoverGame;
-import eu.insertcode.wordgames.games.ReorderGame;
-import eu.insertcode.wordgames.games.TimedGame;
-import eu.insertcode.wordgames.games.UnmuteGame;
-import eu.insertcode.wordgames.games.WordGame;
+import eu.insertcode.wordgames.games.*;
 import eu.insertcode.wordgames.games.WordGame.Reward;
+import org.bukkit.Bukkit;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.ArrayList;
+import java.util.List;
 
 class AutoStart {
 	private static Main plugin;
@@ -42,23 +38,55 @@ class AutoStart {
 				return;
 			}
 			
-			plugin.wordGames.add(getRandomGameType(wordToType, reward));
+			WordGame randomGame = getRandomGameType(wordToType, reward);
+			if (randomGame == null) {
+				Bukkit.getConsoleSender().sendMessage(Main.getColouredMessages("error.noGamesEnabled"));
+				return;
+			}
+			plugin.wordGames.add(randomGame);
 		}, 20 * 10, seconds * 20);
 	}
 	
 	
+	/**
+	 * Note to self: This code works. Don't refactor everything. You don't have the time.
+	 *
+	 * @return a random [WordGame], or null if all types are disabled
+	 */
+	@Nullable
 	private static WordGame getRandomGameType(String wordToType, Reward reward) {
-		switch ((int) Math.ceil(Math.random() * 5)) {
-			case 1:
-				return new HoverGame(plugin, wordToType, reward);
-			case 2:
-				return new ReorderGame(plugin, wordToType, reward);
-			case 3:
-				return new TimedGame(plugin, wordToType, reward);
-			case 4:
+		ArrayList<String> gameTypeOptions = new ArrayList<>();
+		if (plugin.getConfig().getBoolean("gameOptions.calculate.enabled", true))
+			gameTypeOptions.add("calculate");
+		
+		if (plugin.getConfig().getBoolean("gameOptions.hover.enabled", true))
+			gameTypeOptions.add("hover");
+		
+		if (plugin.getConfig().getBoolean("gameOptions.reorder.enabled", true))
+			gameTypeOptions.add("reorder");
+		
+		if (plugin.getConfig().getBoolean("gameOptions.unmute.enabled", true))
+			gameTypeOptions.add("unmute");
+		
+		if (plugin.getConfig().getBoolean("gameOptions.timed.enabled", true))
+			gameTypeOptions.add("timed");
+		
+		
+		if (gameTypeOptions.isEmpty())
+			return null;
+		
+		int i = (int) Math.floor(Math.random() * gameTypeOptions.size());
+		switch (gameTypeOptions.get(i)) {
+			case "calculate":
 				return new CalculateGame(plugin, "", reward);
-			default:
+			case "hover":
+				return new HoverGame(plugin, wordToType, reward);
+			case "reorder":
+				return new ReorderGame(plugin, wordToType, reward);
+			case "unmute":
 				return new UnmuteGame(plugin, wordToType, reward);
+			default:
+				return new TimedGame(plugin, wordToType, reward);
 		}
 	}
 	

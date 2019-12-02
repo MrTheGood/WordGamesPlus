@@ -1,5 +1,7 @@
 package eu.insertcode.wordgames;
 
+import eu.insertcode.wordgames.games.*;
+import eu.insertcode.wordgames.games.WordGame.Reward;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -8,18 +10,7 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-import eu.insertcode.wordgames.games.CalculateGame;
-import eu.insertcode.wordgames.games.HoverGame;
-import eu.insertcode.wordgames.games.ReorderGame;
-import eu.insertcode.wordgames.games.TimedGame;
-import eu.insertcode.wordgames.games.UnmuteGame;
-import eu.insertcode.wordgames.games.WordGame;
-import eu.insertcode.wordgames.games.WordGame.Reward;
-
-import static org.bukkit.ChatColor.DARK_GREEN;
-import static org.bukkit.ChatColor.DARK_RED;
-import static org.bukkit.ChatColor.GOLD;
-import static org.bukkit.ChatColor.GREEN;
+import static org.bukkit.ChatColor.*;
 
 @SuppressWarnings("SameReturnValue")
 public class CommandHandler implements CommandExecutor {
@@ -58,27 +49,52 @@ public class CommandHandler implements CommandExecutor {
 				
 				//Test which wordgame the user is trying to create
 				if (args[0].equalsIgnoreCase("calculate")) {
+					boolean enabled = plugin.getConfig().getBoolean("gameOptions.calculate.enabled", true);
+					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+						return errorMessage(s, "error.gameDisabled");
+					}
+					
 					// wordgames <type> [amount] <reward>
 					return Permission.START_ALL.forSender(s, Permission.START_CALCULATE)
 							? createCalculateGame(s, args)
 							: errorMessage(s, "error.noPermissions");
 				}
 				if (args[0].equalsIgnoreCase("hover")) {
+					boolean enabled = plugin.getConfig().getBoolean("gameOptions.hover.enabled", true);
+					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+						return errorMessage(s, "error.gameDisabled");
+					}
+					
 					return Permission.START_ALL.forSender(s, Permission.START_HOVER)
 							? createGame(s, args, Type.HOVER)
 							: errorMessage(s, "error.noPermissions");
 				}
 				if (args[0].equalsIgnoreCase("reorder")) {
+					boolean enabled = plugin.getConfig().getBoolean("gameOptions.reorder.enabled", true);
+					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+						return errorMessage(s, "error.gameDisabled");
+					}
+					
 					return Permission.START_ALL.forSender(s, Permission.START_REORDER)
 							? createGame(s, args, Type.REORDER)
 							: errorMessage(s, "error.noPermissions");
 				}
 				if (args[0].equalsIgnoreCase("unmute")) {
+					boolean enabled = plugin.getConfig().getBoolean("gameOptions.unmute.enabled", true);
+					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+						return errorMessage(s, "error.gameDisabled");
+					}
+					
 					return Permission.START_ALL.forSender(s, Permission.START_UNMUTE)
 							? createGame(s, args, Type.UNMUTE)
 							: errorMessage(s, "error.noPermissions");
 				}
 				if (args[0].equalsIgnoreCase("timed")) {
+					boolean enabled = plugin.getConfig().getBoolean("gameOptions.timed.enabled", true);
+					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+						return errorMessage(s, "error.gameDisabled");
+					}
+					
 					return Permission.START_ALL.forSender(s, Permission.START_TIMED)
 							? createGame(s, args, Type.TIMED)
 							: errorMessage(s, "error.noPermissions");

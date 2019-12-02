@@ -44,10 +44,12 @@ games:
 
 
 error:
+  gameDisabled: '{plugin} &4Error! This game type is disabled!'
+  noGamesEnabled: '{plugin} &4Error! autoStart requires at least one game to be enabled!'
   noPlayPermissions: '{plugin} &4Congratulations! You guessed the right word! Unfortunately you do not have the permissions to participate in this particular wordgame type.'
   noPermissions: '{plugin} &4You do not have the permissions to execute that command.'
   typeNotFound: '{plugin} &4Error 404: Type not found! Usage: /wordgame <help>'
   wrongInput: '{plugin} &4Syntax error. Usage: /wordgame <help>'
   notPlaying: "{plugin} &4It isn't possible to stop something that isn't there!"
-  configWrong: '{plugin} &4Something went wrong in the configuration. If you need help fixing it, please contact insertCode.'
+  configWrong: '{plugin} &4Something went wrong in the configuration. If you need help fixing it, please contact insertCode on Spigot.'
   tooManyGames: '{plugin} &4You cannot create any more games.'

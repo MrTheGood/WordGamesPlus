@@ -17,10 +17,18 @@ gameOptions:
   scheduler:
     #The wait between each game and/or each message.
     timerInSeconds: 900
+  calculate:
+    enabled: true
+  hover:
+    enabled: true
+  reorder:
+    enabled: true
   unmute:
+    enabled: true
     #This is how many percent of the characters should be muted in the unmute game type.
     percentageOfCharactersToMute: 25
   timed:
+    enabled: true
     #This is how many seconds the users have to type the word in the timed game type.
     secondsToType: 10
 

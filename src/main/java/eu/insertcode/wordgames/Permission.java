@@ -17,6 +17,8 @@ public enum Permission {
 	START_REORDER("wordgames.start.reorder"),
 	START_CALCULATE("wordgames.start.calculate"),
 	
+	START_DISABLED("wordgames.start.disabled"),
+	
 	PLAY_ALL("wordgames.play"),
 	PLAY_HOVER("wordgames.play.hover"),
 	PLAY_TIMED("wordgames.play.timed"),
