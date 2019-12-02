@@ -9,8 +9,8 @@ gameOptions:
     enabled: false
     timerInSeconds: 2750
   #This is the command that will be executed once someone won.
-  rewardCommandSyntax: 'give {username} {reward} {amount}'
-  #rewardCommandSyntax: 'money give {username} {amount}' - You could also use this to give money instead.
+  rewardCommandSyntax: "give {username} {reward} {amount}"
+  #rewardCommandSyntax: "money give {username} {amount}" - You could also use this to give money instead.
   #
   #Amount of games that can play at the same time. Set to 0 to remove the limit.
   maxPlayingGames: 1
@@ -45,35 +45,35 @@ autoStart:
   #
   #All possible rewards the autostart will use. The syntax should be [amount] <reward>
   rewards:
-  - 'diamond'
-  - 'ironingot'
-  - '4 ironingot'
-  - 'egg'
-  - 'itemframe'
-  - 'painting'
-  - 'beacon'
-  - 'spawn_egg:120'
+    - "diamond"
+    - "ironingot"
+    - "4 ironingot"
+    - "egg"
+    - "itemframe"
+    - "painting"
+    - "beacon"
+    - "spawn_egg:120"
   #
   #All the possible words the autostart will use.
   words:
-  - 'WordGames+'
-  - 'insertCode'
-  - 'Minecraft'
-  - 'enderman'
-  - 'enderdragon'
-  - 'creeper'
-  - 'spider'
-  - 'bookshelf'
-  - 'redstone'
-  - 'elytra'
-  - 'pufferfish'
-  - 'enchanted'
-  - 'apocalypse'
-  - 'nether'
-  - 'homework'
-  - 'administrator'
-  - 'alpaca'
-  - 'message'
-  - 'player'
-  - 'another'
-  - 'word'
+    - "WordGames+"
+    - "insertCode"
+    - "Minecraft"
+    - "enderman"
+    - "enderdragon"
+    - "creeper"
+    - "spider"
+    - "bookshelf"
+    - "redstone"
+    - "elytra"
+    - "pufferfish"
+    - "enchanted"
+    - "apocalypse"
+    - "nether"
+    - "homework"
+    - "administrator"
+    - "alpaca"
+    - "message"
+    - "player"
+    - "another"
+    - "word"
