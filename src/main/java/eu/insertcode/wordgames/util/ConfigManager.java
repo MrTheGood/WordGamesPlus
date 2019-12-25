@@ -22,12 +22,12 @@ public class ConfigManager {
 		if (!configFile.exists()) {
 			configFile.getParentFile().mkdirs();
 			p.saveResource("config.yml", false);
-			Bukkit.getConsoleSender().sendMessage("[<WordGames+, insertCode>] config.yml not found. Creating...");
+			Bukkit.getConsoleSender().sendMessage("[<WordGames+ by MrTheGood>] config.yml not found. Creating...");
 		}
 		if (!messagesFile.exists()) {
 			messagesFile.getParentFile().mkdirs();
 			p.saveResource("messages.yml", false);
-			Bukkit.getConsoleSender().sendMessage("[<WordGames+, insertCode>] messages.yml not found. Creating...");
+			Bukkit.getConsoleSender().sendMessage("[<WordGames+ by MrTheGood>] messages.yml not found. Creating...");
 		}
 		
 		FileConfiguration config = new YamlConfiguration();
@@ -36,9 +36,9 @@ public class ConfigManager {
 			config.load(configFile);
 			messages.load(messagesFile);
 		} catch (IOException e) {
-			Bukkit.getConsoleSender().sendMessage("[<WordGames+, insertCode>] Something went wrong while loading the config.");
+			Bukkit.getConsoleSender().sendMessage("[<WordGames+ by MrTheGood>] Something went wrong while loading the config.");
 		} catch (InvalidConfigurationException e) {
-			Bukkit.getConsoleSender().sendMessage("[<WordGames+, insertCode>] The config is wrong.");
+			Bukkit.getConsoleSender().sendMessage("[<WordGames+ by MrTheGood>] The config is wrong.");
 		}
 	}
 	

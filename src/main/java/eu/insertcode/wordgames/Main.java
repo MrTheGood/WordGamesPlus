@@ -19,7 +19,7 @@ import static eu.insertcode.wordgames.util.UpdateCheckerKt.checkUpdate;
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
 /**
- * @author Maarten de Goede - insertCode.eu
+ * @author Maarten de Goede - mrthegood.dev
  * Main class
  */
 public class Main extends JavaPlugin implements Listener {

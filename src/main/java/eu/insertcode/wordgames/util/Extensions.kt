@@ -7,7 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin
 
 /**
  * Created by maartendegoede on 27/10/2018.
- * Copyright © 2018 insertCode.eu. All rights reserved.
+ * Copyright © 2018 Maarten de Goede. All rights reserved.
  */
 inline fun <reified T : Event> JavaPlugin.listenFor(
         listener: Listener = object : Listener {},

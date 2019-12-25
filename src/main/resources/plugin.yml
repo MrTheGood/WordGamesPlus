@@ -1,8 +1,8 @@
 name: WordGamesPlus
 version: '1.4' #Don't forget to update the version in the build.gradle as well
-author: Maarten de Goede - insertCode.eu
+author: Maarten de Goede - mrthegood.dev
 website: 'https://github.com/MrTheGood/WordGamesPlus'
-prefix: '<WordGames+, insertCode>'
+prefix: '<WordGames+ by MrTheGood>'
 description: Have you ever been sad because of a boring chat? Don't be! WordGames+ makes the chat happy!
 main: eu.insertcode.wordgames.Main
 commands:

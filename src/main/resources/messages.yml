@@ -51,5 +51,5 @@ error:
   typeNotFound: "{plugin} &4Error 404: Type not found! Usage: /wordgame <help>"
   wrongInput: "{plugin} &4Syntax error. Usage: /wordgame <help>"
   notPlaying: "{plugin} &4It isn't possible to stop something that isn't there!"
-  configWrong: "{plugin} &4Something went wrong in the configuration. If you need help fixing it, please contact insertCode on Spigot."
+  configWrong: "{plugin} &4Something went wrong in the configuration. If you need help fixing it, please contact MrTheGood on Spigot."
   tooManyGames: "{plugin} &4You cannot create any more games."

@@ -57,13 +57,13 @@ autoStart:
   #All the possible words the autostart will use.
   words:
     - "WordGames+"
-    - "insertCode"
     - "Minecraft"
     - "enderman"
     - "enderdragon"
     - "creeper"
     - "spider"
     - "bookshelf"
+    - "herobrine"
     - "redstone"
     - "elytra"
     - "pufferfish"
