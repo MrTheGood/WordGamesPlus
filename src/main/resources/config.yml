@@ -19,6 +19,8 @@ gameOptions:
     timerInSeconds: 900
   calculate:
     enabled: true
+  first:
+    enabled: true
   hover:
     enabled: true
   reorder:

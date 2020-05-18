@@ -59,6 +59,17 @@ public class CommandHandler implements CommandExecutor {
 							? createCalculateGame(s, args)
 							: errorMessage(s, "error.noPermissions");
 				}
+				if (args[0].equalsIgnoreCase("first")) {
+					boolean enabled = plugin.getConfig().getBoolean("gameOptions.first.enabled", true);
+					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+						return errorMessage(s, "error.gameDisabled");
+					}
+					
+					// wordgames <type> [amount] <reward>
+					return Permission.START_ALL.forSender(s, Permission.START_FIRST)
+							? createGame(s, args, Type.FIRST)
+							: errorMessage(s, "error.noPermissions");
+				}
 				if (args[0].equalsIgnoreCase("hover")) {
 					boolean enabled = plugin.getConfig().getBoolean("gameOptions.hover.enabled", true);
 					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
@@ -124,6 +135,9 @@ public class CommandHandler implements CommandExecutor {
 		
 		if (Permission.START_ALL.forSender(s, Permission.START_REORDER))
 			s.sendMessage(GREEN + "/wordgames reorder <word> [number] <reward>" + DARK_GREEN + "  to start the 'reorder' minigame.");
+		
+		if (Permission.START_ALL.forSender(s, Permission.START_FIRST))
+			s.sendMessage(GREEN + "/wordgames first <word> [number] <reward>" + DARK_GREEN + "  to start the 'first' minigame.");
 		
 		if (Permission.START_ALL.forSender(s, Permission.START_HOVER))
 			s.sendMessage(GREEN + "/wordgames hover <word> [number] <reward>" + DARK_GREEN + " to start the 'hover' minigame.");
@@ -229,6 +243,9 @@ public class CommandHandler implements CommandExecutor {
 			case REORDER:
 				plugin.wordGames.add(new ReorderGame(plugin, wordToType, reward));
 				return true;
+			case FIRST:
+				plugin.wordGames.add(new FirstGame(plugin, wordToType, reward));
+				return true;
 			case HOVER:
 				plugin.wordGames.add(new HoverGame(plugin, wordToType, reward));
 				return true;
@@ -264,5 +281,5 @@ public class CommandHandler implements CommandExecutor {
 		return true;
 	}
 	
-	private enum Type {HOVER, REORDER, UNMUTE, TIMED}
+	private enum Type {HOVER, FIRST, REORDER, UNMUTE, TIMED}
 }

@@ -59,6 +59,9 @@ class AutoStart {
 		if (plugin.getConfig().getBoolean("gameOptions.calculate.enabled", true))
 			gameTypeOptions.add("calculate");
 		
+		if (plugin.getConfig().getBoolean("gameOptions.first.enabled", true))
+			gameTypeOptions.add("first");
+		
 		if (plugin.getConfig().getBoolean("gameOptions.hover.enabled", true))
 			gameTypeOptions.add("hover");
 		
@@ -79,6 +82,8 @@ class AutoStart {
 		switch (gameTypeOptions.get(i)) {
 			case "calculate":
 				return new CalculateGame(plugin, "", reward);
+			case "first":
+				return new FirstGame(plugin, wordToType, reward);
 			case "hover":
 				return new HoverGame(plugin, wordToType, reward);
 			case "reorder":

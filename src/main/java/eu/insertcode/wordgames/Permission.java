@@ -12,6 +12,7 @@ public enum Permission {
 	
 	START_ALL("wordgames.start"),
 	START_HOVER("wordgames.start.hover"),
+	START_FIRST("wordgames.start.first"),
 	START_TIMED("wordgames.start.timed"),
 	START_UNMUTE("wordgames.start.unmute"),
 	START_REORDER("wordgames.start.reorder"),
@@ -23,6 +24,7 @@ public enum Permission {
 	PLAY_HOVER("wordgames.play.hover"),
 	PLAY_TIMED("wordgames.play.timed"),
 	PLAY_UNMUTE("wordgames.play.unmute"),
+	PLAY_FIRST("wordgames.play.first"),
 	PLAY_REORDER("wordgames.play.reorder"),
 	PLAY_CALCULATE("wordgames.play.calculate");
 	

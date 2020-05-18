@@ -19,6 +19,9 @@ games:
   reorder:
     - "{plugin} &2Reorder the following letters to make a word: &a{word}&2."
     - "{plugin} &2Reward: &a{amount}x {reward}&2!"
+  first:
+    - "{plugin} &2Be the first to type the following word: &a{word}&2."
+    - "{plugin} &2Reward: &a{amount}x {reward}&2!"
   unmute:
     - "{plugin} &2Unmute the following word: &a{word}&2."
     - "{plugin} &2Reward: &a{amount}x {reward}&2!"
