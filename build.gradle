@@ -15,7 +15,7 @@ apply plugin: 'kotlin'
 apply plugin: 'com.github.johnrengelman.shadow'
 
 group 'eu.insertcode.wordgames'
-version '1.4'
+version '1.4.1'
 sourceCompatibility = 1.8
 
 repositories {
