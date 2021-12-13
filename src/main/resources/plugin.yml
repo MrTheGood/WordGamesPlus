@@ -1,5 +1,5 @@
 name: WordGamesPlus
-version: '1.4.1' #Don't forget to update the version in the build.gradle as well
+version: '1.4.2' #Don't forget to update the version in the build.gradle as well
 author: Maarten de Goede - mrthegood.dev
 website: 'https://github.com/MrTheGood/WordGamesPlus'
 prefix: '<WordGames+ by MrTheGood>'
