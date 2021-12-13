@@ -17,7 +17,7 @@ private fun JavaPlugin.onUpdate(callback: (version: String) -> Unit) = Thread {
     try {
         val base = "https://api.spiget.org/v2/resources/"
         val conn = URL("$base$RESOURCE_ID/versions?size=1&sort=-releaseDate&fields=name").openConnection()
-        val json = InputStreamReader(conn.inputStream).let { JsonParser().parse(it).asJsonArray }
+        val json = InputStreamReader(conn.inputStream).use { JsonParser.parseReader(it).asJsonArray }
 
         val version = json.first().asJsonObject["name"].asString
         if (version newerThan description.version)
