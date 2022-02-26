@@ -1,56 +1,35 @@
-package eu.insertcode.wordgames;
+package eu.insertcode.wordgames
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+import org.bukkit.command.CommandSender
+import org.bukkit.entity.Player
 
-public enum Permission {
-	
-	STOP("wordgames.stop"),
-	LIST("wordgames.list"),
-	RELOAD("wordgames.reload"),
-	UPDATE("wordgames.update"),
-	
-	START_ALL("wordgames.start"),
-	START_HOVER("wordgames.start.hover"),
-	START_FIRST("wordgames.start.first"),
-	START_TIMED("wordgames.start.timed"),
-	START_UNMUTE("wordgames.start.unmute"),
-	START_REORDER("wordgames.start.reorder"),
-	START_CALCULATE("wordgames.start.calculate"),
-	
-	START_DISABLED("wordgames.start.disabled"),
-	
-	PLAY_ALL("wordgames.play"),
-	PLAY_HOVER("wordgames.play.hover"),
-	PLAY_TIMED("wordgames.play.timed"),
-	PLAY_UNMUTE("wordgames.play.unmute"),
-	PLAY_FIRST("wordgames.play.first"),
-	PLAY_REORDER("wordgames.play.reorder"),
-	PLAY_CALCULATE("wordgames.play.calculate");
-	
-	private final String permission;
-	
-	Permission(String perm) {
-		this.permission = perm;
-	}
-	
-	public String toString() {
-		return permission;
-	}
-	
-	public boolean forSender(CommandSender s, Permission alternative) {
-		return s.hasPermission(toString()) || alternative.forSender(s);
-	}
-	
-	public boolean forSender(CommandSender s) {
-		return s.hasPermission(toString());
-	}
-	
-	public boolean forPlayer(Player p, Permission alternative) {
-		return p.hasPermission(toString()) || alternative.forPlayer(p);
-	}
-	
-	public boolean forPlayer(Player p) {
-		return p.hasPermission(toString());
-	}
+enum class Permission(private val permission: String) {
+    STOP("wordgames.stop"),
+    LIST("wordgames.list"),
+    RELOAD("wordgames.reload"),
+    UPDATE("wordgames.update"),
+
+    START_ALL("wordgames.start"),
+    START_HOVER("wordgames.start.hover"),
+    START_FIRST("wordgames.start.first"),
+    START_TIMED("wordgames.start.timed"),
+    START_UNMUTE("wordgames.start.unmute"),
+    START_REORDER("wordgames.start.reorder"),
+    START_CALCULATE("wordgames.start.calculate"),
+
+    START_DISABLED("wordgames.start.disabled"),
+
+    PLAY_ALL("wordgames.play"),
+    PLAY_HOVER("wordgames.play.hover"),
+    PLAY_TIMED("wordgames.play.timed"),
+    PLAY_UNMUTE("wordgames.play.unmute"),
+    PLAY_FIRST("wordgames.play.first"),
+    PLAY_REORDER("wordgames.play.reorder"),
+    PLAY_CALCULATE("wordgames.play.calculate");
+
+    fun forSender(s: CommandSender, alternative: Permission? = null): Boolean =
+        s.hasPermission(permission) || alternative?.forSender(s) ?: false
+
+    fun forPlayer(p: Player, alternative: Permission? = null): Boolean =
+        p.hasPermission(permission) || alternative?.forPlayer(p) ?: false
 }

@@ -54,7 +54,7 @@ public class CommandHandler implements CommandExecutor {
 				//Test which wordgame the user is trying to create
 				if (args[0].equalsIgnoreCase("calculate")) {
 					boolean enabled = Config.GameOptions.Calculate.INSTANCE.getEnabled();
-					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+					if (!enabled && !Permission.START_DISABLED.forSender(s, null)) {
 						return errorMessage(s, Messages.Error.gameDisabled);
 					}
 					
@@ -65,7 +65,7 @@ public class CommandHandler implements CommandExecutor {
 				}
 				if (args[0].equalsIgnoreCase("first")) {
 					boolean enabled = Config.GameOptions.First.INSTANCE.getEnabled();
-					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+					if (!enabled && !Permission.START_DISABLED.forSender(s, null)) {
 						return errorMessage(s, Messages.Error.gameDisabled);
 					}
 					
@@ -76,7 +76,7 @@ public class CommandHandler implements CommandExecutor {
 				}
 				if (args[0].equalsIgnoreCase("hover")) {
 					boolean enabled = Config.GameOptions.Hover.INSTANCE.getEnabled();
-					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+					if (!enabled && !Permission.START_DISABLED.forSender(s, null)) {
 						return errorMessage(s, Messages.Error.gameDisabled);
 					}
 
@@ -86,7 +86,7 @@ public class CommandHandler implements CommandExecutor {
 				}
 				if (args[0].equalsIgnoreCase("reorder")) {
 					boolean enabled = Config.GameOptions.Reorder.INSTANCE.getEnabled();
-					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+					if (!enabled && !Permission.START_DISABLED.forSender(s, null)) {
 						return errorMessage(s, Messages.Error.gameDisabled);
 					}
 
@@ -96,7 +96,7 @@ public class CommandHandler implements CommandExecutor {
 				}
 				if (args[0].equalsIgnoreCase("unmute")) {
 					boolean enabled = Config.GameOptions.Unmute.INSTANCE.getEnabled();
-					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+					if (!enabled && !Permission.START_DISABLED.forSender(s, null)) {
 						return errorMessage(s, Messages.Error.gameDisabled);
 					}
 
@@ -106,7 +106,7 @@ public class CommandHandler implements CommandExecutor {
 				}
 				if (args[0].equalsIgnoreCase("timed")) {
 					boolean enabled = Config.GameOptions.Timed.INSTANCE.getEnabled();
-					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
+					if (!enabled && !Permission.START_DISABLED.forSender(s, null)) {
 						return errorMessage(s, Messages.Error.gameDisabled);
 					}
 
@@ -126,14 +126,14 @@ public class CommandHandler implements CommandExecutor {
 	@SuppressWarnings("SameReturnValue")
 	private boolean onCommandHelp(CommandSender s) {
 		s.sendMessage(GREEN + "/wordgames help" + DARK_GREEN + "  to show this message.");
-		
-		if (Permission.RELOAD.forSender(s))
+
+		if (Permission.RELOAD.forSender(s, null))
 			s.sendMessage(GREEN + "/wordgames reload" + DARK_GREEN + "  to reload the configuration.");
-		
-		if (Permission.LIST.forSender(s))
+
+		if (Permission.LIST.forSender(s, null))
 			s.sendMessage(GREEN + "/wordgames list" + DARK_GREEN + "  To see all currently playing games.");
-		
-		if (Permission.STOP.forSender(s))
+
+		if (Permission.STOP.forSender(s, null))
 			s.sendMessage(GREEN + "/wordgames stop" + DARK_GREEN + "  to stop any and all playing games.");
 		
 		
@@ -162,7 +162,7 @@ public class CommandHandler implements CommandExecutor {
 	
 	private boolean onCommandList(CommandSender s) {
 		//If the sender the required permissions
-		if (!Permission.LIST.forSender(s)) {
+		if (!Permission.LIST.forSender(s, null)) {
 			return errorMessage(s, Messages.Error.noPermissions);
 		}
 
@@ -179,7 +179,7 @@ public class CommandHandler implements CommandExecutor {
 	
 	private boolean onCommandStop(CommandSender s) {
 		//If the sender the required permissions
-		if (!Permission.STOP.forSender(s)) {
+		if (!Permission.STOP.forSender(s, null)) {
 			return errorMessage(s, Messages.Error.noPermissions);
 		}
 		
@@ -206,7 +206,7 @@ public class CommandHandler implements CommandExecutor {
 	
 	private boolean onCommandReload(CommandSender s) {
 		//If the sender the required permissions
-		if (!Permission.RELOAD.forSender(s)) {
+		if (!Permission.RELOAD.forSender(s, null)) {
 			return errorMessage(s, Messages.Error.noPermissions);
 		}
 

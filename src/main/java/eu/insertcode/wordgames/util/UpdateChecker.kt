@@ -39,10 +39,9 @@ fun JavaPlugin.checkUpdate() {
         })
 
         listenFor<PlayerJoinEvent>(priority = EventPriority.MONITOR) { event ->
-            event.player.run {
-                if (Permission.UPDATE.forPlayer(player)) {
-                    player?.sendMessage(message)
-                }
+            event.player.let {
+                if (Permission.UPDATE.forPlayer(it))
+                    it.sendMessage(message)
             }
         }
     }
