@@ -3,7 +3,6 @@ package eu.insertcode.wordgames;
 import eu.insertcode.wordgames.config.Config;
 import eu.insertcode.wordgames.config.Messages;
 import eu.insertcode.wordgames.games.*;
-import eu.insertcode.wordgames.games.WordGame.Reward;
 import eu.insertcode.wordgames.message.MessageHandler;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
