@@ -1,7 +1,11 @@
 package eu.insertcode.wordgames;
 
+import eu.insertcode.wordgames.config.Config;
+import eu.insertcode.wordgames.config.ConfigManager;
+import eu.insertcode.wordgames.config.Messages;
 import eu.insertcode.wordgames.games.*;
 import eu.insertcode.wordgames.games.WordGame.Reward;
+import eu.insertcode.wordgames.message.MessageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -41,77 +45,77 @@ public class CommandHandler implements CommandExecutor {
 			 */
 			if (args.length >= 2) {
 				//If the wordgames limit has been reached,
-				int maxPlayingGames = plugin.getConfig().getInt("gameOptions.maxPlayingGames");
+				int maxPlayingGames = Config.GameOptions.INSTANCE.getMaxPlayingGames();
 				if (plugin.wordGames.size() >= maxPlayingGames
 						&& maxPlayingGames > 0) {
-					return errorMessage(s, "error.tooManyGames");
+					return errorMessage(s, Messages.Error.tooManyGames);
 				}
 				
 				//Test which wordgame the user is trying to create
 				if (args[0].equalsIgnoreCase("calculate")) {
-					boolean enabled = plugin.getConfig().getBoolean("gameOptions.calculate.enabled", true);
+					boolean enabled = Config.GameOptions.Calculate.INSTANCE.getEnabled();
 					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
-						return errorMessage(s, "error.gameDisabled");
+						return errorMessage(s, Messages.Error.gameDisabled);
 					}
 					
 					// wordgames <type> [amount] <reward>
 					return Permission.START_ALL.forSender(s, Permission.START_CALCULATE)
-							? createCalculateGame(s, args)
-							: errorMessage(s, "error.noPermissions");
+						? createCalculateGame(s, args)
+						: errorMessage(s, Messages.Error.noPermissions);
 				}
 				if (args[0].equalsIgnoreCase("first")) {
-					boolean enabled = plugin.getConfig().getBoolean("gameOptions.first.enabled", true);
+					boolean enabled = Config.GameOptions.First.INSTANCE.getEnabled();
 					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
-						return errorMessage(s, "error.gameDisabled");
+						return errorMessage(s, Messages.Error.gameDisabled);
 					}
 					
 					// wordgames <type> [amount] <reward>
 					return Permission.START_ALL.forSender(s, Permission.START_FIRST)
-							? createGame(s, args, Type.FIRST)
-							: errorMessage(s, "error.noPermissions");
+						? createGame(s, args, Type.FIRST)
+						: errorMessage(s, Messages.Error.noPermissions);
 				}
 				if (args[0].equalsIgnoreCase("hover")) {
-					boolean enabled = plugin.getConfig().getBoolean("gameOptions.hover.enabled", true);
+					boolean enabled = Config.GameOptions.Hover.INSTANCE.getEnabled();
 					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
-						return errorMessage(s, "error.gameDisabled");
+						return errorMessage(s, Messages.Error.gameDisabled);
 					}
-					
+
 					return Permission.START_ALL.forSender(s, Permission.START_HOVER)
-							? createGame(s, args, Type.HOVER)
-							: errorMessage(s, "error.noPermissions");
+						? createGame(s, args, Type.HOVER)
+						: errorMessage(s, Messages.Error.noPermissions);
 				}
 				if (args[0].equalsIgnoreCase("reorder")) {
-					boolean enabled = plugin.getConfig().getBoolean("gameOptions.reorder.enabled", true);
+					boolean enabled = Config.GameOptions.Reorder.INSTANCE.getEnabled();
 					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
-						return errorMessage(s, "error.gameDisabled");
+						return errorMessage(s, Messages.Error.gameDisabled);
 					}
-					
+
 					return Permission.START_ALL.forSender(s, Permission.START_REORDER)
-							? createGame(s, args, Type.REORDER)
-							: errorMessage(s, "error.noPermissions");
+						? createGame(s, args, Type.REORDER)
+						: errorMessage(s, Messages.Error.noPermissions);
 				}
 				if (args[0].equalsIgnoreCase("unmute")) {
-					boolean enabled = plugin.getConfig().getBoolean("gameOptions.unmute.enabled", true);
+					boolean enabled = Config.GameOptions.Unmute.INSTANCE.getEnabled();
 					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
-						return errorMessage(s, "error.gameDisabled");
+						return errorMessage(s, Messages.Error.gameDisabled);
 					}
-					
+
 					return Permission.START_ALL.forSender(s, Permission.START_UNMUTE)
-							? createGame(s, args, Type.UNMUTE)
-							: errorMessage(s, "error.noPermissions");
+						? createGame(s, args, Type.UNMUTE)
+						: errorMessage(s, Messages.Error.noPermissions);
 				}
 				if (args[0].equalsIgnoreCase("timed")) {
-					boolean enabled = plugin.getConfig().getBoolean("gameOptions.timed.enabled", true);
+					boolean enabled = Config.GameOptions.Timed.INSTANCE.getEnabled();
 					if (!enabled && !Permission.START_DISABLED.forSender(s)) {
-						return errorMessage(s, "error.gameDisabled");
+						return errorMessage(s, Messages.Error.gameDisabled);
 					}
-					
+
 					return Permission.START_ALL.forSender(s, Permission.START_TIMED)
-							? createGame(s, args, Type.TIMED)
-							: errorMessage(s, "error.noPermissions");
+						? createGame(s, args, Type.TIMED)
+						: errorMessage(s, Messages.Error.noPermissions);
 				}
-				
-				return errorMessage(s, "error.typeNotFound");
+
+				return errorMessage(s, Messages.Error.typeNotFound);
 			}
 		} catch (IndexOutOfBoundsException e) {
 			return onCommandHelp(s);
@@ -159,24 +163,24 @@ public class CommandHandler implements CommandExecutor {
 	private boolean onCommandList(CommandSender s) {
 		//If the sender the required permissions
 		if (!Permission.LIST.forSender(s)) {
-			return errorMessage(s, "error.noPermissions");
+			return errorMessage(s, Messages.Error.noPermissions);
 		}
-		
-		s.sendMessage(Main.getColouredMessages("games.list.prefix"));
+
+		MessageHandler.INSTANCE.sendMessage(s, Messages.Games.List.prefix, true);
 		for (int i = 0; i < plugin.wordGames.size(); i++) {
 			s.sendMessage(DARK_GREEN.toString() + i + ".");
 			for (String message : plugin.wordGames.get(i).getGameMessages()) {
 				s.sendMessage(DARK_GREEN + "   " + message);
 			}
 		}
-		s.sendMessage(Main.getColouredMessages("games.list.suffix"));
+		MessageHandler.INSTANCE.sendMessage(s, Messages.Games.List.suffix, true);
 		return true;
 	}
 	
 	private boolean onCommandStop(CommandSender s) {
 		//If the sender the required permissions
 		if (!Permission.STOP.forSender(s)) {
-			return errorMessage(s, "error.noPermissions");
+			return errorMessage(s, Messages.Error.noPermissions);
 		}
 		
 		//If a game is playing.
@@ -191,11 +195,11 @@ public class CommandHandler implements CommandExecutor {
 			plugin.wordGames = new ArrayList<>();
 			
 			//Broadcast the stop
-			for (String msg : Main.getColouredMessages("games.stop"))
+			for (String msg : MessageHandler.INSTANCE.getColouredMessages(Messages.Games.stop))
 				Bukkit.broadcastMessage(msg);
 		} else {
 			//No games are playing, tell sender!
-			return errorMessage(s, "error.notPlaying");
+			return errorMessage(s, Messages.Error.notPlaying);
 		}
 		return true;
 	}
@@ -203,17 +207,17 @@ public class CommandHandler implements CommandExecutor {
 	private boolean onCommandReload(CommandSender s) {
 		//If the sender the required permissions
 		if (!Permission.RELOAD.forSender(s)) {
-			return errorMessage(s, "error.noPermissions");
+			return errorMessage(s, Messages.Error.noPermissions);
 		}
-		
+
 		//Reload & send a message
-		plugin.reload();
-		s.sendMessage(Main.getColouredMessages("reload"));
+		ConfigManager.INSTANCE.reload(plugin);
+		MessageHandler.INSTANCE.sendMessage(s, Messages.reload, true);
 		return true;
 	}
 	
 	private boolean errorMessage(CommandSender s, String path) {
-		s.sendMessage(Main.getColouredMessages(path));
+		MessageHandler.INSTANCE.sendMessage(s, path, true);
 		return true;
 	}
 	
@@ -232,7 +236,7 @@ public class CommandHandler implements CommandExecutor {
 				amount = Integer.parseInt(args[2]);
 			} catch (NumberFormatException e) {
 				//Something went wrong, no need to panic! I got this.
-				return errorMessage(s, "error.wrongInput");
+				return errorMessage(s, Messages.Error.wrongInput);
 			}
 			rewardString = args[3];
 		}
@@ -271,7 +275,7 @@ public class CommandHandler implements CommandExecutor {
 			try {
 				amount = Integer.parseInt(args[1]);
 			} catch (NumberFormatException e) {
-				return errorMessage(s, "error.wrongInput");
+				return errorMessage(s, Messages.Error.wrongInput);
 			}
 			rewardString = args[2];
 		}

@@ -1,17 +1,19 @@
 package eu.insertcode.wordgames.games;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.Permission;
+import eu.insertcode.wordgames.config.Config;
+import eu.insertcode.wordgames.config.Messages;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class UnmuteGame extends LongWordGame {
 	
 	public UnmuteGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
-		
-		double charactersToMute = plugin.getConfig().getDouble("gameOptions.unmute.percentageOfCharactersToMute");
+
+		double charactersToMute = Config.GameOptions.Unmute.INSTANCE.getPercentageOfCharactersToMute();
 		showedWord = muteString(wordToType, charactersToMute);
 		
 		sendGameMessage();
@@ -24,7 +26,7 @@ public class UnmuteGame extends LongWordGame {
 	
 	@Override
 	String getMessageConfigPath() {
-		return "games.unmute";
+		return Messages.Games.unmute;
 	}
 	
 	private static int countAsterisks(String text) {

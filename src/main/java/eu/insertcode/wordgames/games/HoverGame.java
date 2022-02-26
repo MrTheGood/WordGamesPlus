@@ -2,7 +2,9 @@ package eu.insertcode.wordgames.games;
 
 import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.Permission;
-import eu.insertcode.wordgames.util.ConfigManager;
+import eu.insertcode.wordgames.config.ConfigManager;
+import eu.insertcode.wordgames.config.Messages;
+import eu.insertcode.wordgames.message.MessageHandler;
 import net.md_5.bungee.api.chat.BaseComponent;
 import net.md_5.bungee.api.chat.HoverEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -22,7 +24,7 @@ public class HoverGame extends LongWordGame {
 	public HoverGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
 
-		String[] messages = Main.getMessages("games.hover");
+		List<String> messages = MessageHandler.INSTANCE.getMessages(Messages.Games.hover);
 		for (String message : messages) {
 			message = message
 					.replace("{amount}", "" + reward.getAmount())
@@ -34,7 +36,7 @@ public class HoverGame extends LongWordGame {
 			BaseComponent[] components = new BaseComponent[inProgress.length];
 			for (int i = 0; i < inProgress.length; i++) {
 				if (inProgress[i].equalsIgnoreCase("{word}")) {
-					TextComponent hoverComponent = new TextComponent(translateAlternateColorCodes('&', ConfigManager.getMessages().getString("variables.HOVER")));
+					TextComponent hoverComponent = new TextComponent(translateAlternateColorCodes('&', ConfigManager.INSTANCE.getMessagesConfig().getString(Messages.Variables.hover)));
 					hoverComponent.setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, new Text(wordToType)));
 					components[i] = hoverComponent;
 				} else {
@@ -61,15 +63,18 @@ public class HoverGame extends LongWordGame {
 	 */
 	@Override
 	public String[] getGameMessages() {
-		String[] messages = Main.getMessages("games.hover");
-		for (int i = 0; i < messages.length; i++) {
-			messages[i] = messages[i]
-					.replace("{amount}", "" + reward.getAmount())
-					.replace("{reward}", reward.getReward())
-					.replace("{word}", ConfigManager.getMessages().getString("variables.HOVER") + "[" + wordToType + "]");
-			messages[i] = translateAlternateColorCodes('&', messages[i]);
+		List<String> messages = MessageHandler.INSTANCE.getMessages(Messages.Games.hover);
+		for (int i = 0; i < messages.size(); i++) {
+			messages.set(i, messages.get(i)
+				.replace("{amount}", "" + reward.getAmount())
+				.replace("{reward}", reward.getReward())
+				.replace("{word}", ConfigManager.INSTANCE.getMessagesConfig().getString(Messages.Variables.hover) + "[" + wordToType + "]"));
+			messages.set(i, translateAlternateColorCodes('&', messages.get(i)));
 		}
-		return messages;
+
+		String[] result = new String[messages.size()];
+		result = messages.toArray(result);
+		return result;
 	}
 	
 	@Override

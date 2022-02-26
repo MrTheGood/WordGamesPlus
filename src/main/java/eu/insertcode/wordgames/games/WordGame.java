@@ -1,12 +1,16 @@
 package eu.insertcode.wordgames.games;
 
+import eu.insertcode.wordgames.Main;
+import eu.insertcode.wordgames.Permission;
+import eu.insertcode.wordgames.config.Config;
+import eu.insertcode.wordgames.config.Messages;
+import eu.insertcode.wordgames.message.MessageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import eu.insertcode.wordgames.Main;
-import eu.insertcode.wordgames.Permission;
+import java.util.List;
 
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
@@ -28,7 +32,7 @@ public abstract class WordGame {
 	}
 	
 	void sendWinnerMessage(Player winner) {
-		String[] messages = Main.getMessages("games.gameWon");
+		List<String> messages = MessageHandler.INSTANCE.getMessages(Messages.Games.gameWon);
 		for (String message : messages) {
 			message = formatGameMessage(message, wordToType).replace("{player}", winner.getDisplayName());
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
@@ -40,13 +44,16 @@ public abstract class WordGame {
 	abstract String getMessageConfigPath();
 	
 	public String[] getGameMessages() {
-		String[] messages = Main.getMessages(getMessageConfigPath());
-		for (int i = 0; i < messages.length; i++) {
-			messages[i] = formatGameMessage(messages[i], showedWord);
-			messages[i] = translateAlternateColorCodes('&', messages[i]);
-			
+		List<String> messages = MessageHandler.INSTANCE.getMessages(getMessageConfigPath());
+		for (int i = 0; i < messages.size(); i++) {
+			messages.set(i, formatGameMessage(messages.get(i), showedWord));
+			messages.set(i, translateAlternateColorCodes('&', messages.get(i)));
+
 		}
-		return messages;
+
+		String[] result = new String[messages.size()];
+		result = messages.toArray(result);
+		return result;
 	}
 	
 	void sendGameMessage() {
@@ -69,12 +76,11 @@ public abstract class WordGame {
 			String message = ChatColor.stripColor(e.getMessage()).trim();
 			if (message.equalsIgnoreCase(wordToType)) {
 				if (!Permission.PLAY_ALL.forPlayer(p, getPlayPermission())) {
-					for (String msg : Main.getColouredMessages("error.noPlayPermissions"))
-						p.sendMessage(msg);
+					MessageHandler.INSTANCE.sendMessage(p, Messages.Error.noPlayPermissions, true);
 					return;
 				}
-				
-				String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
+
+				String command = Config.GameOptions.INSTANCE.getRewardCommandSyntax();
 				command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
 				Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
 				

@@ -1,7 +1,10 @@
 package eu.insertcode.wordgames;
 
+import eu.insertcode.wordgames.config.Config;
+import eu.insertcode.wordgames.config.Messages;
 import eu.insertcode.wordgames.games.*;
 import eu.insertcode.wordgames.games.WordGame.Reward;
+import eu.insertcode.wordgames.message.MessageHandler;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
@@ -17,16 +20,16 @@ class AutoStart {
 	
 	
 	static void autoStart() {
-		if (!plugin.getConfig().getBoolean("autoStart.enabled")) {
+		if (!Config.AutoStart.INSTANCE.getEnabled()) {
 			// Warn the console that it is disabled.
 			plugin.getLogger().warning("autoStart is NOT enabled. Please edit the configuration if you want to enable it.");
 			return;
 		}
-		
-		long seconds = plugin.getConfig().getLong("gameOptions.scheduler.timerInSeconds");
+
+		long seconds = Config.GameOptions.Scheduler.INSTANCE.getTimerInSeconds();
 		Bukkit.getScheduler().scheduleSyncRepeatingTask(plugin, () -> {
 			// If there already are games playing or there are not enough players online,
-			if (plugin.wordGames.size() > 0 || Bukkit.getOnlinePlayers().size() < plugin.getConfig().getInt("autoStart.minimumPlayers"))
+			if (plugin.wordGames.size() > 0 || Bukkit.getOnlinePlayers().size() < Config.AutoStart.INSTANCE.getMinimumPlayers())
 				return;
 			
 			String wordToType = getRandomWordToType();
@@ -34,13 +37,13 @@ class AutoStart {
 			
 			// Test if this shit isn't null..
 			if (reward == null || wordToType == null) {
-				Bukkit.getConsoleSender().sendMessage(Main.getColouredMessages("error.configWrong"));
+				MessageHandler.INSTANCE.sendMessage(Bukkit.getConsoleSender(), Messages.Error.configWrong, true);
 				return;
 			}
 			
 			WordGame randomGame = getRandomGameType(wordToType, reward);
 			if (randomGame == null) {
-				Bukkit.getConsoleSender().sendMessage(Main.getColouredMessages("error.noGamesEnabled"));
+				MessageHandler.INSTANCE.sendMessage(Bukkit.getConsoleSender(), Messages.Error.noGamesEnabled, true);
 				return;
 			}
 			plugin.wordGames.add(randomGame);
@@ -56,22 +59,22 @@ class AutoStart {
 	@Nullable
 	private static WordGame getRandomGameType(String wordToType, Reward reward) {
 		ArrayList<String> gameTypeOptions = new ArrayList<>();
-		if (plugin.getConfig().getBoolean("gameOptions.calculate.enabled", true))
+		if (Config.GameOptions.Calculate.INSTANCE.getEnabled())
 			gameTypeOptions.add("calculate");
-		
-		if (plugin.getConfig().getBoolean("gameOptions.first.enabled", true))
+
+		if (Config.GameOptions.First.INSTANCE.getEnabled())
 			gameTypeOptions.add("first");
-		
-		if (plugin.getConfig().getBoolean("gameOptions.hover.enabled", true))
+
+		if (Config.GameOptions.Hover.INSTANCE.getEnabled())
 			gameTypeOptions.add("hover");
-		
-		if (plugin.getConfig().getBoolean("gameOptions.reorder.enabled", true))
+
+		if (Config.GameOptions.Reorder.INSTANCE.getEnabled())
 			gameTypeOptions.add("reorder");
-		
-		if (plugin.getConfig().getBoolean("gameOptions.unmute.enabled", true))
+
+		if (Config.GameOptions.Unmute.INSTANCE.getEnabled())
 			gameTypeOptions.add("unmute");
-		
-		if (plugin.getConfig().getBoolean("gameOptions.timed.enabled", true))
+
+		if (Config.GameOptions.Timed.INSTANCE.getEnabled())
 			gameTypeOptions.add("timed");
 		
 		
@@ -96,13 +99,13 @@ class AutoStart {
 	}
 	
 	private static String getRandomWordToType() {
-		List<String> words = plugin.getConfig().getStringList("autoStart.words");
+		List<String> words = Config.AutoStart.INSTANCE.getWords();
 		return words.isEmpty() ? null : words.get((int) Math.floor(Math.random() * words.size()));
 	}
 	
 	
 	private static Reward getRandomReward() {
-		List<String> rewards = plugin.getConfig().getStringList("autoStart.rewards");
+		List<String> rewards = Config.AutoStart.INSTANCE.getRewards();
 		
 		if (rewards.isEmpty()) return null;//Config wrong
 		

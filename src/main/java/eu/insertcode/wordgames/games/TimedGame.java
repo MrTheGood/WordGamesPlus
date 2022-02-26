@@ -1,14 +1,17 @@
 package eu.insertcode.wordgames.games;
 
+import eu.insertcode.wordgames.Main;
+import eu.insertcode.wordgames.Permission;
+import eu.insertcode.wordgames.config.Config;
+import eu.insertcode.wordgames.config.Messages;
+import eu.insertcode.wordgames.message.MessageHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
-
-import eu.insertcode.wordgames.Main;
-import eu.insertcode.wordgames.Permission;
+import java.util.List;
 
 import static org.bukkit.ChatColor.translateAlternateColorCodes;
 
@@ -18,10 +21,10 @@ public class TimedGame extends WordGame {
 	
 	public TimedGame(Main instance, String wordToType, Reward reward) {
 		super(instance, wordToType, reward);
-		
-		this.seconds = plugin.getConfig().getInt("gameOptions.timed.secondsToType");
+
+		this.seconds = Config.GameOptions.Timed.INSTANCE.getSecondsToType();
 		Bukkit.getScheduler().scheduleSyncDelayedTask(plugin, () -> {
-			for (String message : Main.getMessages("games.timed.stop")) {
+			for (String message : MessageHandler.INSTANCE.getMessages(Messages.Games.Timed.stop)) {
 				message = formatGameMessage(message, wordToType);
 				Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 			}
@@ -38,7 +41,7 @@ public class TimedGame extends WordGame {
 	
 	@Override
 	String getMessageConfigPath() {
-		return "games.timed.start";
+		return Messages.Games.Timed.start;
 	}
 	
 	@Override
@@ -52,7 +55,7 @@ public class TimedGame extends WordGame {
 	 */
 	@Override
 	void sendWinnerMessage(Player winner) {
-		String[] messages = Main.getMessages("games.timed.gameWon");
+		List<String> messages = MessageHandler.INSTANCE.getMessages(Messages.Games.Timed.gameWon);
 		for (String message : messages) {
 			message = formatGameMessage(message, wordToType).replace("{player}", winner.getDisplayName());
 			winner.sendMessage(translateAlternateColorCodes('&', message));
@@ -72,12 +75,11 @@ public class TimedGame extends WordGame {
 			String message = ChatColor.stripColor(e.getMessage()).trim();
 			if (message.equalsIgnoreCase(wordToType)) {
 				if (!Permission.PLAY_ALL.forPlayer(p, getPlayPermission())) {
-					for (String msg : Main.getColouredMessages("error.noPlayPermissions"))
-						p.sendMessage(msg);
+					MessageHandler.INSTANCE.sendMessage(p, Messages.Error.noPlayPermissions, true);
 					return;
 				}
-				
-				String command = plugin.getConfig().getString("gameOptions.rewardCommandSyntax");
+
+				String command = Config.GameOptions.INSTANCE.getRewardCommandSyntax();
 				command = command.replace("{username}", p.getName()).replace("{reward}", reward.getReward()).replace("{amount}", "" + reward.getAmount());
 				Bukkit.dispatchCommand(plugin.getServer().getConsoleSender(), command);
 				

@@ -1,10 +1,11 @@
 package eu.insertcode.wordgames.games;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import eu.insertcode.wordgames.Main;
 import eu.insertcode.wordgames.Permission;
+import eu.insertcode.wordgames.config.Messages;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ReorderGame extends LongWordGame {
 	
@@ -21,7 +22,7 @@ public class ReorderGame extends LongWordGame {
 	
 	@Override
 	String getMessageConfigPath() {
-		return "games.reorder";
+		return Messages.Games.reorder;
 	}
 	
 	private String reorderString(String string) {
