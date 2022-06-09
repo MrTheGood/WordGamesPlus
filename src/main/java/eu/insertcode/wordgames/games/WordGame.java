@@ -30,7 +30,7 @@ public abstract class WordGame {
 	void sendWinnerMessage(Player winner) {
 		String[] messages = Main.getMessages("games.gameWon");
 		for (String message : messages) {
-			message = formatGameMessage(message, wordToType).replace("{player}", winner.getDisplayName());
+			message = formatGameMessage(message, wordToType).replace("{player}", winner.getName());
 			Bukkit.broadcastMessage(translateAlternateColorCodes('&', message));
 		}
 	}
